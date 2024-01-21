@@ -23,4 +23,6 @@ output "private_dns_cname_records" {
 }
 ```
 
-<pre>map(object({<br>    name                = string      # required<br>    resource_group_name = string      # required<br>    zone_name           = string      # required<br>    ttl                 = number      # required<br>    tags                = map(string)<br>    record              = map(object({<br>      value = string<br>    }))<br>  }))</pre>      
+| <a name="input_example_type"></a> [example\_type](#input\_example\_type) | Тип  | Описание | По умолчанию | Обязательный |
+|---------------------------------------------------------------------------|------|----------|--------------|--------------|
+| <pre>map(object({<br>    name                = string      # required<br>    resource_group_name = string      # required<br>    zone_name           = string      # required<br>    ttl                 = number      # required<br>    record              = string      # required<br>    tags                = map(string)<br>  }))</pre>    
