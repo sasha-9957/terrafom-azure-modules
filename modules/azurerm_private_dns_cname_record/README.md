@@ -22,3 +22,5 @@ output "private_dns_cname_records" {
   value = module.private_dns_cname_record
 }
 ```
+
+<pre>map(object({<br>    name                = string      # required<br>    resource_group_name = string      # required<br>    zone_name           = string      # required<br>    ttl                 = number      # required<br>    tags                = map(string)<br>    record              = map(object({<br>      value = string<br>    }))<br>  }))</pre>      
