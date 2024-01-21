@@ -29,6 +29,7 @@ output "private_dns_cname_records" {
 |---------------------------------------------------------------------------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5  |
 
+
 ## Providers
 
 | Name                                                          | Version |
