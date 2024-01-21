@@ -41,7 +41,7 @@ module "private_dns_a_record" {
 
   azurerm_private_dns_a_record_params = {
     main_private_dns_zone = {
-      name                = "test-1"                                                                # required
+      name                = "dev-1"                                                                # required
       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
       ttl                 = 300                                                                     # required
@@ -57,11 +57,11 @@ module "private_dns_cname_record" {
 
   azurerm_private_dns_cname_record_params = {
     main_private_dns_zone = {
-      name                = "tes-2"                                                                 # required
+      name                = "dev-2"                                                                 # required
       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
       ttl                 = 300                                                                     # required
-      record              = "contoso.com"                                                           # required
+      record              = "alias-example.com"                                                           # required
       tags                = module.tags.tags
     }
   }
@@ -72,7 +72,7 @@ module "private_dns_ptr_record" {
 
   azurerm_private_dns_ptr_record_params = {
     main_private_dns_zone = {
-      name                = "tes-3"                                                                 # required
+      name                = "dev-3"                                                                 # required
       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
       ttl                 = 300                                                                     # required
@@ -93,10 +93,10 @@ module "private_dns_txt_record" {
       ttl                 = 300                                                                    # required
       tags                = module.tags.tags
       record = {
-        "1" = {
-         value = "v=spf1 include:_spf.google.com -all"
+        "spf" = {
+         value = "v=spf1 include:_spf.example.com -all"
         }
-        "2" = {
+        "verification" = {
          value = "google-site-verification=xxxxxxxxxxxx"
         }
       }                                                     
@@ -115,13 +115,13 @@ module "private_dns_mx_record" {
       ttl                 = 300                                                                    # required
       tags                = module.tags.tags
       record = {
-        "1" = {
+        "backup-mx" = {
          preference  = 20
-         exchange    = "backupmx.contoso.com"
+         exchange    = "backupmx.exampe.com"
         }
-        "2" = {
+        "mx" = {
          preference  = 10
-         exchange    = "mx1.contoso.com"
+         exchange    = "mx1.exampe.com"
         }
       }                                                     
     }
