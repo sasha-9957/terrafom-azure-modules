@@ -76,9 +76,3 @@ No modules.
 ## Modules
 
 No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [azurerm_private_dns_cname_record.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
