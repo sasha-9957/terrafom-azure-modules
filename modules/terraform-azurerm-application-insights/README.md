@@ -7,16 +7,21 @@ resource "azurerm_application_insights" "this" {
 
   for_each = var.azurerm_application_insights_params
 
-  name                          = each.value.name                             # required
-  resource_group_name           = each.value.resource_group_name              # required
-  location                      = each.value.location                         # required
-  application_type              = each.value.application_type                 # required
-  workspace_id                  = each.value.workspace_id
-  retention_in_days             = each.value.retention_in_days
-  sampling_percentage           = each.value.sampling_percentage
-  disable_ip_masking            = each.value.disable_ip_masking
-  local_authentication_disabled = each.value.local_authentication_disabled
-  tags                          = each.value.tags
+    name                                  = "app-insights-name"                                   # required
+    location                              = local.location                                        # required
+    resource_group_name                   = module.resource_group.resource_groups["main_rg"].name # required
+    application_type                      = "web"                                                 # required
+    workspace_id                          = null
+    retention_in_days                     = null
+    sampling_percentage                   = null
+    disable_ip_masking                    = null
+    daily_data_cap_in_gb                  = null
+    local_authentication_disabled         = null
+    daily_data_cap_notifications_disabled = null
+    internet_ingestion_enabled            = null
+    internet_query_enabled                = null
+    force_customer_storage_for_profiler   = null
+    tags                                  = module.tags.tags
 }
 
 ```
