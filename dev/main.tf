@@ -4,50 +4,46 @@ module "resource_group" {
 
   resource_group_params = {
     main_rg = {
-      location   = local.location
-      name       = module.name.names["main_rg"].result
-      managed_by = null
-      tags       = module.tags.tags
+      location                               = local.location
+      name                                   = module.name.names["main_rg"].result
+      managed_by                             = null
+      tags                                   = module.tags.tags
       prevent_deletion_if_contains_resources = true
     }
-    
+
   }
 }
-
-# resource "azurerm_log_analytics_workspace" "this" {
-#   name                = "workspace-test"
-#   location            = local.location
-#   resource_group_name = module.resource_group.resource_groups["main_rg"].name
-#   sku                 = "PerGB2018"
-#   retention_in_days   = 30
-# }
 
 module "application_insights" {
   source = "../modules/terraform-azurerm-application-insights"
 
   azurerm_application_insights_params = {
     application_insights = {
-      #name = module.name.names["main_application_insights"].result
-      name                                  = "app-insights-name"
-      location                              = local.location
-      resource_group_name                   = module.resource_group.resource_groups["main_rg"].name
-      application_type                      = "web"
-      workspace_id                          = null #azurerm_log_analytics_workspace.this.id
+      name                                  = "app-insights-name"                                   # required
+      location                              = local.location                                        # required
+      resource_group_name                   = module.resource_group.resource_groups["main_rg"].name # required
+      application_type                      = "web"                                                 # required
+      workspace_id                          = null
       retention_in_days                     = null
       sampling_percentage                   = null
       disable_ip_masking                    = null
       daily_data_cap_in_gb                  = null
       local_authentication_disabled         = null
       daily_data_cap_notifications_disabled = null
+      internet_ingestion_enabled            = null
+      internet_query_enabled                = null
+      force_customer_storage_for_profiler   = null
       tags                                  = module.tags.tags
     }
   }
 }
 
- output "application_insights" {
-   value = module.application_insights
-   sensitive = true
- }
+
+output "application_insights" {
+  value     = module.application_insights
+  sensitive = true
+}
+
 
 # module "private_dns_zone" {
 #   source = "../modules/terraform-azurerm-private-dns-zone"

@@ -12,6 +12,9 @@ variable "azurerm_application_insights_params" {
     disable_ip_masking                    = bool
     local_authentication_disabled         = bool
     daily_data_cap_notifications_disabled = bool
+    internet_ingestion_enabled            = bool
+    internet_query_enabled                = bool
+    force_customer_storage_for_profiler   = bool
     tags                                  = map(string)
   }))
 }
