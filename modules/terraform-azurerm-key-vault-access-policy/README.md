@@ -4,19 +4,21 @@
 ### Example:
 
 ```hcl
+data "azurerm_client_config" "current" {}
+
 module "key_vault_access_policy" {
 
-  source = "../modules/terraform-azurerm-key-vault-access-policy"
+  source = "app.terraform.io/captionhealth/key-vault-access-policy/azurerm"
 
   azurerm_key_vault_access_policy_params = {
     key_vault_access_policy = {
-      key_vault_id            = azurerm_key_vault.test.id
-      tenant_id               = data.azurerm_client_config.current.tenant_id
-      object_id               = data.azurerm_client_config.current.object_id
-      key_permissions         = ["List", "Get", "Create", "Delete"]
-      secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+      key_vault_id            = module.key_vault.key_vaults["main_key_vault"].id  # Required
+      tenant_id               = data.azurerm_client_config.current.tenant_id      # Required
+      object_id               = data.azurerm_client_config.current.object_id      # Required
+      key_permissions         = ["Get", "List"]
+      secret_permissions      = ["Get", "List"]
       application_id          = null
-      certificate_permissions = ["List", "Get", "Create", "Delete"]
+      certificate_permissions = null
       storage_permissions     = null
     }
   }
@@ -51,7 +53,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_azurerm_key_vault_access_policy_params"></a> [azurerm\_key\_vault\_access\_policy\_params](#input\_azurerm\_key\_vault\_access\_policy\_params) | Object map for Azure Key Vault Access Policy module input parameters. | <pre>map(object({<br>    key_vault_id            = string<br>    tenant_id               = string<br>    object_id               = string<br>    application_id          = string<br>    key_permissions         = list(string)<br>    secret_permissions      = list(string)<br>    certificate_permissions = list(string)<br>    storage_permissions     = list(string)<br><br>  }))</pre> | n/a | yes |
+| <a name="input_azurerm_key_vault_access_policy_params"></a> [azurerm\_key\_vault\_access\_policy\_params](#input\_azurerm\_key\_vault\_access\_policy\_params) | Object map for Azure Key Vault Access Policy module input parameters. | <pre>map(object({<br>    key_vault_id            = string<br>    tenant_id               = string<br>    object_id               = string<br>    application_id          = string<br>    key_permissions         = list(string)<br>    secret_permissions      = list(string)<br>    certificate_permissions = list(string)<br>    storage_permissions     = list(string)<br>}))</pre> | n/a | yes |
 
 ## Outputs
 

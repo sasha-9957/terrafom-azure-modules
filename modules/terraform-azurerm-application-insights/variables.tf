@@ -1,5 +1,6 @@
 variable "azurerm_application_insights_params" {
   description = "Object map for Azure application insights module input parameters."
+  
   type = map(object({
     name                                  = string # required
     location                              = string # required

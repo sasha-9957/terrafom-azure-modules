@@ -15,44 +15,44 @@ resource "azurerm_key_vault" "this" {
   soft_delete_retention_days      = each.value.soft_delete_retention_days
   tags                            = each.value.tags
 
-  dynamic "access_policy" {
-    iterator = ap
-    for_each = each.value.ap
+  # dynamic "access_policy" {
+  #   iterator = ap
+  #   for_each = each.value.ap
 
-    content {
-      tenant_id               = ap.value.tenant_id # required
-      object_id               = ap.value.object_id # required
-      application_id          = ap.value.application_id
-      certificate_permissions = ap.value.certificate_permissions
-      key_permissions         = ap.value.key_permissions
-      secret_permissions      = ap.value.secret_permissions
-      storage_permissions     = ap.value.storage_permissions
-    }
+  #   content {
+  #     tenant_id               = ap.value.tenant_id # required
+  #     object_id               = ap.value.object_id # required
+  #     application_id          = ap.value.application_id
+  #     certificate_permissions = ap.value.certificate_permissions
+  #     key_permissions         = ap.value.key_permissions
+  #     secret_permissions      = ap.value.secret_permissions
+  #     storage_permissions     = ap.value.storage_permissions
+  #   }
 
-  }
+  # }
 
-  dynamic "network_acls" {
-    iterator = na
-    for_each = each.value.network_acls
+  # dynamic "network_acls" {
+  #   iterator = na
+  #   for_each = each.value.network_acls
 
-    content {
-      bypass                     = na.value.bypass         # required
-      default_action             = na.value.default_action # required
-      ip_rules                   = na.value.ip_rules
-      virtual_network_subnet_ids = na.value.virtual_network_subnet_ids
-    }
+  #   content {
+  #     bypass                     = na.value.bypass         # required
+  #     default_action             = na.value.default_action # required
+  #     ip_rules                   = na.value.ip_rules
+  #     virtual_network_subnet_ids = na.value.virtual_network_subnet_ids
+  #   }
 
-  }
+  # }
 
-  dynamic "contact" {
-    iterator = c
-    for_each = each.value.contact
+  # dynamic "contact" {
+  #   iterator = c
+  #   for_each = each.value.contact
 
-    content {
-      email = c.value.email # required
-      name  = c.value.name
-      phone = c.value.phone
-    }
+  #   content {
+  #     email = c.value.email # required
+  #     name  = c.value.name
+  #     phone = c.value.phone
+  #   }
 
-  }
+  # }
 }
