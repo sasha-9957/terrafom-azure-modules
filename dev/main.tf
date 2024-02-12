@@ -15,14 +15,6 @@ module "resource_group" {
 
 data "azurerm_client_config" "current" {}
 
-# resource "azurerm_key_vault" "test" {
-#   name                = "examplekeyvault-000002"
-#   location            = local.location
-#   resource_group_name = module.resource_group.resource_groups["main_rg"].name
-#   tenant_id           = data.azurerm_client_config.current.tenant_id
-#   sku_name            = "standard"
-# }
-
 module "key_vault" {
   source = "../modules/terraform-azurerm-key-vault"
 
@@ -70,35 +62,35 @@ output "key_vault_access_policy" {
 
 }
 
-# module "application_insights" {
-#   source = "../modules/terraform-azurerm-application-insights"
+module "application_insights" {
+  source = "../modules/terraform-azurerm-application-insights"
 
-#   azurerm_application_insights_params = {
-#     application_insights = {
-#       name                                  = "app-insights-name"                                   # required
-#       location                              = local.location                                        # required
-#       resource_group_name                   = module.resource_group.resource_groups["main_rg"].name # required
-#       application_type                      = "web"                                                 # required
-#       workspace_id                          = null
-#       retention_in_days                     = null
-#       sampling_percentage                   = null
-#       disable_ip_masking                    = null
-#       daily_data_cap_in_gb                  = null
-#       local_authentication_disabled         = null
-#       daily_data_cap_notifications_disabled = null
-#       internet_ingestion_enabled            = null
-#       internet_query_enabled                = null
-#       force_customer_storage_for_profiler   = null
-#       tags                                  = module.tags.tags
-#     }
-#   }
-# }
+  azurerm_application_insights_params = {
+    application_insights = {
+      name                                  = "app-insights-name"                                   # required
+      location                              = local.location                                        # required
+      resource_group_name                   = module.resource_group.resource_groups["main_rg"].name # required
+      application_type                      = "web"                                                 # required
+      workspace_id                          = null
+      retention_in_days                     = null
+      sampling_percentage                   = null
+      disable_ip_masking                    = null
+      daily_data_cap_in_gb                  = null
+      local_authentication_disabled         = null
+      daily_data_cap_notifications_disabled = null
+      internet_ingestion_enabled            = null
+      internet_query_enabled                = null
+      force_customer_storage_for_profiler   = null
+      tags                                  = module.tags.tags
+    }
+  }
+}
 
 
-# output "application_insights" {
-#   value     = module.application_insights
-#   sensitive = true
-# }
+output "application_insights" {
+  value     = module.application_insights
+  sensitive = true
+}
 
 
 module "private_dns_zone" {
@@ -124,51 +116,51 @@ module "private_dns_zone" {
   }
 }
 
-# module "private_dns_a_record" {
-#   source = "../modules/terraform-azurerm-private-dns-a-record"
+module "private_dns_a_record" {
+  source = "../modules/terraform-azurerm-private-dns-a-record"
 
-#   azurerm_private_dns_a_record_params = {
-#     main_private_dns_zone = {
-#       name                = "dev-0"                                                                 # required
-#       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
-#       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
-#       ttl                 = 300                                                                     # required
-#       records             = ["10.0.180.17"]                                                         # required
-#       tags                = module.tags.tags                                                        # required
-#     }
-#   }
-# }
+  azurerm_private_dns_a_record_params = {
+    main_private_dns_zone = {
+      name                = "dev-0"                                                                 # required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
+      zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
+      ttl                 = 300                                                                     # required
+      records             = ["10.0.180.17"]                                                         # required
+      tags                = module.tags.tags                                                        # required
+    }
+  }
+}
 
 
-# module "private_dns_cname_record" {
-#   source = "../modules/azurerm_private_dns_cname_record"
+module "private_dns_cname_record" {
+  source = "../modules/terraform-azurerm-private-dns-cname-record"
 
-#   azurerm_private_dns_cname_record_params = {
-#     main_private_dns_zone = {
-#       name                = "dev-1"                                                                 # required
-#       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
-#       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
-#       ttl                 = 300                                                                     # required
-#       record              = "aias-examle.com"                                                       # required
-#       tags                = module.tags.tags
-#     }
-#   }
-# }
+  azurerm_private_dns_cname_record_params = {
+    main_private_dns_zone = {
+      name                = "dev-1"                                                                 # required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
+      zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
+      ttl                 = 300                                                                     # required
+      record              = "aias-examle.com"                                                       # required
+      tags                = module.tags.tags
+    }
+  }
+}
 
-# module "private_dns_ptr_record" {
-#   source = "../modules/azurerm_private_dns_ptr_record"
+module "private_dns_ptr_record" {
+  source = "../modules/terraform-azurerm-private-dns-ptr-record"
 
-#   azurerm_private_dns_ptr_record_params = {
-#     main_private_dns_zone = {
-#       name                = "dev-2"                                                                 # required
-#       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
-#       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
-#       ttl                 = 300                                                                     # required
-#       records             = ["yourdomain.com"]                                                      # required
-#       tags                = module.tags.tags
-#     }
-#   }
-# }
+  azurerm_private_dns_ptr_record_params = {
+    main_private_dns_zone = {
+      name                = "dev-2"                                                                 # required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
+      zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
+      ttl                 = 300                                                                     # required
+      records             = ["yourdomain.com"]                                                      # required
+      tags                = module.tags.tags
+    }
+  }
+}
 
 
 module "private_dns_txt_record" {
@@ -193,26 +185,26 @@ module "private_dns_txt_record" {
   }
 }
 
-# module "private_dns_mx_record" {
-#   source = "../modules/azurerm_private_dns_mx_record"
+module "private_dns_mx_record" {
+  source = "../modules/terraform-azurerm-private-dns-mx-record"
 
-#   azurerm_private_dns_mx_record_params = {
-#     main_private_dns_zone = {
-#       name                = "@"                                                                     # required
-#       resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
-#       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
-#       ttl                 = 300                                                                     # required
-#       tags                = module.tags.tags
-#       record = {
-#         "backup-mx" = {
-#           preference = 20
-#           exchange   = "backupmx.example.com"
-#         }
-#         "mx" = {
-#           preference = 10
-#           exchange   = "mx1.example.com"
-#         }
-#       }
-#     }
-#   }
-# }
+  azurerm_private_dns_mx_record_params = {
+    main_private_dns_zone = {
+      name                = "@"                                                                     # required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name                   # required
+      zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # required
+      ttl                 = 300                                                                     # required
+      tags                = module.tags.tags
+      record = {
+        "backup-mx" = {
+          preference = 20
+          exchange   = "backupmx.example.com"
+        }
+        "mx" = {
+          preference = 10
+          exchange   = "mx1.example.com"
+        }
+      }
+    }
+  }
+}
