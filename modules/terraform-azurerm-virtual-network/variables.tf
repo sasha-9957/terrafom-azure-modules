@@ -1,4 +1,5 @@
 variable "azurerm_virtual_network_params" {
+  description = "Object map for Azure Virtual Network module input parameters."
   type = map(object({
     name                = string       # required
     resource_group_name = string       # required

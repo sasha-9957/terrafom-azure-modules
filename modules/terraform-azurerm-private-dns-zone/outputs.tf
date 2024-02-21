@@ -1,3 +1,4 @@
 output "private_dns_zones" {
-  value = azurerm_private_dns_zone.this
+  description = "An object containing the Private DNS Zones created by the module."
+  value       = azurerm_private_dns_zone.this
 }

@@ -1,10 +1,10 @@
 module "application_insights" {
-  source = "app.terraform.io/captionhealth/application-insights/azurerm"
+  source  = "app.terraform.io/captionhealth/application-insights/azurerm"
   version = "1.0.0"
 
   azurerm_application_insights_params = {
     application_insights = {
-      name                                  = "app-insights-name"                                   # Required
+      name                                  = module.name.names["main_application_insights"].result # Required
       location                              = local.location                                        # Required
       resource_group_name                   = module.resource_group.resource_groups["main_rg"].name # Required
       application_type                      = "web"                                                 # Required

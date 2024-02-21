@@ -1,5 +1,5 @@
 module "private_dns_txt_record" {
-  source = "app.terraform.io/captionhealth/private_dns_txt_record/azurerm"
+  source  = "app.terraform.io/captionhealth/private-dns-txt-record/azurerm"
   version = "1.0.0"
 
   azurerm_private_dns_txt_record_params = {
@@ -9,12 +9,12 @@ module "private_dns_txt_record" {
       zone_name           = module.private_dns_zone.private_dns_zones["main_private_dns_zone"].name # Required
       ttl                 = 300                                                                     # Required
       tags                = module.tags.tags
-      record = {  # Required
+      record = { # Required
         "spf" = {
-          value = "v=spf1 include:_spf.example.com -all"
+          value = "v=spf1 include:_spf.example.com -all" # Required
         }
         "verification" = {
-          value = "google-site-verification=xxxxxxxxxxxx"
+          value = "google-site-verification=xxxxxxxxxxxx" # Required
         }
       }
     }

@@ -1,4 +1,5 @@
 variable "azurerm_key_vault_params" {
+  description = "Object map for Azure Key Vault module input parameters."
   type = map(object({
     name                            = string # required
     location                        = string # required
@@ -14,21 +15,21 @@ variable "azurerm_key_vault_params" {
     soft_delete_retention_days      = number
     tags                            = map(string)
 
-    # access_policy = map(object({
-    #   tenant_id               = string # required
-    #   object_id               = string # required
-    #   application_id          = string
-    #   certificate_permissions = list(string)
-    #   key_permissions         = list(string)
-    #   secret_permissions      = list(string)
-    #   storage_permissions     = list(string)
-    # }))
+    access_policy = list(object({
+      tenant_id               = string # required
+      object_id               = string # required
+      application_id          = string
+      certificate_permissions = list(string)
+      key_permissions         = list(string)
+      secret_permissions      = list(string)
+      storage_permissions     = list(string)
+    }))
 
-    # network_acls = map(object({
-    #   bypass                     = string # required
-    #   default_action             = string # required
-    #   ip_rules                   = set(string)
-    #   virtual_network_subnet_ids = set(string)
-    # }))
+    network_acls = list(object({
+      bypass                     = string # required
+      default_action             = string # required
+      ip_rules                   = set(string)
+      virtual_network_subnet_ids = set(string)
+    }))
   }))
 }

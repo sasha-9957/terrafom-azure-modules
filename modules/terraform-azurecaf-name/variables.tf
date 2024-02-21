@@ -1,4 +1,5 @@
 variable "azurecaf_name_params" {
+  description = "Object map for Azure CAF Names module input parameters."
   type = map(object({
     name           = string
     prefixes       = list(string)

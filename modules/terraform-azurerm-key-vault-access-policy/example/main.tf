@@ -1,7 +1,5 @@
-data "azurerm_client_config" "current" {}
-
 module "key_vault_access_policy" {
-  source = "app.terraform.io/captionhealth/key-vault-access-policy/azurerm"
+  source  = "app.terraform.io/captionhealth/key-vault-access-policy/azurerm"
   version = "1.0.0"
 
   azurerm_key_vault_access_policy_params = {

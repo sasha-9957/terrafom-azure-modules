@@ -11,8 +11,8 @@ resource "azurerm_private_dns_txt_record" "this" {
     iterator = r
     for_each = each.value.record
 
-    content { 
-      value = r.value.value 
+    content {
+      value = r.value.value # Required
     }
   }
 }

@@ -1,3 +1,4 @@
 output "virtual_networks" {
-  value = azurerm_virtual_network.this
+  description = "An object containing the Virtual Networks created by the module."
+  value       = azurerm_virtual_network.this
 }

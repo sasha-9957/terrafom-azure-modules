@@ -1,4 +1,5 @@
 variable "azurerm_storage_blob_params" {
+  description = "Object map for Azure Blob Storage module input parameters."
   type = map(object({
     name                   = string # required
     storage_account_name   = string # required

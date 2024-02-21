@@ -12,8 +12,8 @@ resource "azurerm_private_dns_mx_record" "this" {
     for_each = each.value.record
 
     content {
-      preference = r.value.preference 
-      exchange   = r.value.exchange   
+      preference = r.value.preference
+      exchange   = r.value.exchange
     }
   }
 }

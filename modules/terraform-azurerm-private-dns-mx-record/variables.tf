@@ -7,9 +7,9 @@ variable "azurerm_private_dns_mx_record_params" {
     zone_name           = string # Required
     ttl                 = number # Required
     tags                = map(string)
-    record = map(object({        # Required
-      preference = number
-      exchange   = string
+    record = map(object({ # Required
+      preference = number # Required
+      exchange   = string # Required
     }))
   }))
 }

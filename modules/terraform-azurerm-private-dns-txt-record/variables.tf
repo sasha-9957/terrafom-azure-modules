@@ -7,8 +7,9 @@ variable "azurerm_private_dns_txt_record_params" {
     zone_name           = string # Required
     ttl                 = number # Required
     tags                = map(string)
-    record = map(object({
-      value = string
+
+    record = map(object({ # Required
+      value = string      # Required
     }))
   }))
 }

@@ -1,4 +1,5 @@
 variable "azurerm_storage_account_params" {
+  description = "Object map for Azure Storage Account module input parameters."
   type = map(object({
     name                              = string
     resource_group_name               = string
@@ -25,59 +26,59 @@ variable "azurerm_storage_account_params" {
     sftp_enabled                      = bool
     tags                              = map(string)
 
-    custom_domain = map(object({
+    custom_domain = list(object({
       name          = string # required
       use_subdomain = bool
     }))
 
-    customer_managed_key = map(object({
+    customer_managed_key = list(object({
       key_vault_key_id          = string # required
       user_assigned_identity_id = string # required
     }))
 
-    identity = map(object({
+    identity = list(object({
       type         = string
       identity_ids = set(string)
     }))
 
-    blob_properties = map(object({
-      cors_rule = map(object({
+    blob_properties = list(object({
+      cors_rule = list(object({
         allowed_headers    = list(string) # required
         allowed_methods    = list(string) # required
         allowed_origins    = list(string) # required
         exposed_headers    = list(string) # required
         max_age_in_seconds = number       # required
       }))
-      delete_retention_policy = map(object({
+      delete_retention_policy = list(object({
         days = number
       }))
-      restore_policy = map(object({
+      restore_policy = list(object({
         days = number
       }))
     }))
 
-    queue_properties = map(object({
-      cors_rule = map(object({
+    queue_properties = list(object({
+      cors_rule = list(object({
         allowed_headers    = list(string) # required
         allowed_methods    = list(string) # required
         allowed_origins    = list(string) # required
         exposed_headers    = list(string) # required
         max_age_in_seconds = number       # required
       }))
-      logging = map(object({
+      logging = list(object({
         delete                = bool   # required
         read                  = bool   # required
         version               = string # required
         write                 = bool   # required
         retention_policy_days = number
       }))
-      minute_metrics = map(object({
+      minute_metrics = list(object({
         enabled               = bool   # required
         version               = string # required
         include_apis          = bool
         retention_policy_days = number
       }))
-      hour_metrics = map(object({
+      hour_metrics = list(object({
         enabled               = bool   # required
         version               = string # required
         include_apis          = bool
@@ -85,23 +86,23 @@ variable "azurerm_storage_account_params" {
       }))
     }))
 
-    static_website = map(object({
+    static_website = list(object({
       index_document     = string
       error_404_document = string
     }))
 
-    share_properties = map(object({
-      cors_rule = map(object({
+    share_properties = list(object({
+      cors_rule = list(object({
         allowed_headers    = list(string) # required
         allowed_methods    = list(string) # required
         allowed_origins    = list(string) # required
         exposed_headers    = list(string) # required
         max_age_in_seconds = number       # required
       }))
-      retention_policy = map(object({
+      retention_policy = list(object({
         days = number
       }))
-      smb = map(object({
+      smb = list(object({
         versions                        = set(string)
         authentication_types            = set(string)
         kerberos_ticket_encryption_type = set(string)
@@ -110,20 +111,20 @@ variable "azurerm_storage_account_params" {
       }))
     }))
 
-    network_rules = map(object({
+    network_rules = list(object({
       default_action             = string # required
       bypass                     = string
       ip_rules                   = string
       virtual_network_subnet_ids = set(string)
-      private_link_access = map(object({
+      private_link_access = list(object({
         endpoint_resource_id = string # required
         endpoint_tenant_id   = string
       }))
     }))
 
-    azure_files_authentication = map(object({
+    azure_files_authentication = list(object({
       directory_type = string # required
-      active_directory = map(object({
+      active_directory = list(object({
         domain_name         = string # required
         domain_guid         = string # required
         domain_sid          = string
@@ -133,19 +134,19 @@ variable "azurerm_storage_account_params" {
       }))
     }))
 
-    routing = map(object({
+    routing = list(object({
       publish_internet_endpoints  = bool
       publish_microsoft_endpoints = bool
       choice                      = string
     }))
 
-    immutability_policy = map(object({
+    immutability_policy = list(object({
       allow_protected_append_writes = bool   # required
       state                         = string # required
       period_since_creation_in_days = number # required
     }))
 
-    sas_policy = map(object({
+    sas_policy = list(object({
       expiration_period = string # required
       expiration_action = string
     }))
