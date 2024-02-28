@@ -13,71 +13,110 @@ module "resource_group" {
   }
 }
 
-resource "azurerm_virtual_network" "this" {
-  name                = "example-vnet"
-  address_space       = ["10.0.0.0/16"]
-  location            = local.location
-  resource_group_name = module.resource_group.resource_groups["main_rg"].name
-}
+module "azurerm_log_analytics_workspace" {
+  source  = "../modules/terraform-azurerm-log-analytics-workspace"
 
-resource "azurerm_subnet" "example" {
-  name                 = "example-subnet"
-  resource_group_name  = module.resource_group.resource_groups["main_rg"].name
-  virtual_network_name = azurerm_virtual_network.this.name
-  address_prefixes     = ["10.0.1.0/24"]
+  azurerm_log_analytics_workspace_params = {
+    main_log_analytics_workspace = {
+      name                                    = module.name.names["main_log_analytics_workspace"].result  # Required
+      resource_group_name                     = module.resource_group.resource_groups["main_rg"].name     # Required
+      location                                = module.resource_group.resource_groups["main_rg"].location # Required
+      allow_resource_only_permissions         = null
+      local_authentication_disabled           = null
+      sku                                     = null
+      retention_in_days                       = null
+      daily_quota_gb                          = null
+      cmk_for_query_forced                    = null
+      internet_ingestion_enabled              = null
+      internet_query_enabled                  = null
+      reservation_capacity_in_gb_per_day      = null # Can only be used when the sku is set to CapacityReservation
+      data_collection_rule_id                 = null
+      immediate_data_purge_on_30_days_enabled = null
+      tags                                    = module.tags.tags
 
-  delegation {
-    name = "delegation"
-
-    service_delegation {
-      name    = "Microsoft.ContainerInstance/containerGroups"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
-    }
-  }
-}
-
-
-resource "azurerm_public_ip" "this" {
-  name                = "PublicIPForLB"
-  location            = local.location
-  resource_group_name = module.resource_group.resource_groups["main_rg"].name
-  allocation_method   = "Dynamic"
-}
-
-module "load_balancer" {
-  source = "../modules/terraform-azurerm-load-balancer"
-
-  azurerm_lb_params = {
-    main_azurerm_lb = {
-      name                = module.name.names["main_azurerm_lb"].result
-      location            = module.resource_group.resource_groups["main_rg"].location
-      resource_group_name = module.resource_group.resource_groups["main_rg"].name
-      edge_zone           = null
-      sku                 = null
-      sku_tier            = null
-      tags                = module.tags.tags
-
-      frontend_ip_configuration = [
+      identity = [
         {
-          name                                               = "frontend_name"
-          zones                                              = null
-          subnet_id                                          = null
-          private_ip_address                                 = null
-          private_ip_address_allocation                      = null
-          private_ip_address_version                         = null
-          public_ip_address_id                               = azurerm_public_ip.this.id
-          public_ip_prefix_id                                = null
-          gateway_load_balancer_frontend_ip_configuration_id = null
+         type = "SystemAssigned" 
+         identity_ids = null  # Required if type is UserAssigned
         }
-       ]
+      ]
     }
   }
 }
 
-output "load_balancers" {
-  description = "An object map for input parameters of the Load Balancer module."
-  value       = module.load_balancer.load_balancers
+output "azurerm_log_analytics_workspaces" {
+  description = "An object containing the Azure Log Analytics Workspace created by the module."
+  value       = module.azurerm_log_analytics_workspace.azurerm_log_analytics_workspaces
+  sensitive   = true
 }
+
+
+
+# resource "azurerm_virtual_network" "this" {
+#   name                = "example-vnet"
+#   address_space       = ["10.0.0.0/16"]
+#   location            = local.location
+#   resource_group_name = module.resource_group.resource_groups["main_rg"].name
+# }
+
+# resource "azurerm_subnet" "example" {
+#   name                 = "example-subnet"
+#   resource_group_name  = module.resource_group.resource_groups["main_rg"].name
+#   virtual_network_name = azurerm_virtual_network.this.name
+#   address_prefixes     = ["10.0.1.0/24"]
+
+#   delegation {
+#     name = "delegation"
+
+#     service_delegation {
+#       name    = "Microsoft.ContainerInstance/containerGroups"
+#       actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
+#     }
+#   }
+# }
+
+
+# resource "azurerm_public_ip" "this" {
+#   name                = "PublicIPForLB"
+#   location            = local.location
+#   resource_group_name = module.resource_group.resource_groups["main_rg"].name
+#   allocation_method   = "Dynamic"
+# }
+
+# module "load_balancer" {
+#   source = "../modules/terraform-azurerm-load-balancer"
+
+#   azurerm_lb_params = {
+#     main_azurerm_lb = {
+#       name                = module.name.names["main_azurerm_lb"].result
+#       location            = module.resource_group.resource_groups["main_rg"].location
+#       resource_group_name = module.resource_group.resource_groups["main_rg"].name
+#       edge_zone           = null
+#       sku                 = null
+#       sku_tier            = null
+#       tags                = module.tags.tags
+
+#       frontend_ip_configuration = [
+#         {
+#           name                                               = "frontend_name"
+#           zones                                              = null
+#           subnet_id                                          = null
+#           private_ip_address                                 = null
+#           private_ip_address_allocation                      = null
+#           private_ip_address_version                         = null
+#           public_ip_address_id                               = azurerm_public_ip.this.id
+#           public_ip_prefix_id                                = null
+#           gateway_load_balancer_frontend_ip_configuration_id = null
+#         }
+#        ]
+#     }
+#   }
+# }
+
+# output "load_balancers" {
+#   description = "An object map for input parameters of the Load Balancer module."
+#   value       = module.load_balancer.load_balancers
+# }
 
 
 # data "azurerm_client_config" "current" {}
