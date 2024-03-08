@@ -13,42 +13,119 @@ module "resource_group" {
   }
 }
 
-module "azurerm_log_analytics_workspace" {
-  source  = "../modules/terraform-azurerm-log-analytics-workspace"
 
-  azurerm_log_analytics_workspace_params = {
-    main_log_analytics_workspace = {
-      name                                    = module.name.names["main_log_analytics_workspace"].result  # Required
-      resource_group_name                     = module.resource_group.resource_groups["main_rg"].name     # Required
-      location                                = module.resource_group.resource_groups["main_rg"].location # Required
-      allow_resource_only_permissions         = null
-      local_authentication_disabled           = null
-      sku                                     = null
-      retention_in_days                       = null
-      daily_quota_gb                          = null
-      cmk_for_query_forced                    = null
-      internet_ingestion_enabled              = null
-      internet_query_enabled                  = null
-      reservation_capacity_in_gb_per_day      = null # Can only be used when the sku is set to CapacityReservation
-      data_collection_rule_id                 = null
-      immediate_data_purge_on_30_days_enabled = null
-      tags                                    = module.tags.tags
+module "azurerm_network_security_group" {
+  source = "../modules/terraform-azurerm-network-security-group"
+  version = "1.0.0"
 
-      identity = [
+  azurerm_network_security_group_params = {
+    main_azurerm_network_security_group = {
+      name                = module.name.names["main_azurerm_network_security_group"].result # Required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name           # Required
+      location            = module.resource_group.resource_groups["main_rg"].location       # Required
+      tags                = module.tags.tags
+
+      security_rule = [
         {
-         type = "SystemAssigned" 
-         identity_ids = null  # Required if type is UserAssigned
+          name                                       = module.name.names["main_security_rule"].result # Required
+          description                                = "Access to MSSQL"
+          protocol                                   = "Tcp"                           # Required
+          source_port_range                          = "*"                             # Required if source_port_ranges is not specified.
+          source_port_ranges                         = null                            # Required if source_port_range is not specified.
+          destination_port_range                     = "1433"                          # Required if destination_port_ranges is not specified.
+          destination_port_ranges                    = null                            # Required if destination_port_range is not specified.
+          source_address_prefix                      = null                            # Required if source_address_prefixes is not specified.
+          source_address_prefixes                    = ["172.31.1.1", "172.31.2.0/24"] # Required if source_address_prefix is not specified.
+          source_application_security_group_ids      = null
+          destination_address_prefix                 = "172.31.2.10" # Required if destination_address_prefixes is not specified.
+          destination_address_prefixes               = null          # Required if destination_address_prefix is not specified.
+          destination_application_security_group_ids = null
+          access                                     = "Allow"   # Required
+          priority                                   = 100       # Required
+          direction                                  = "Inbound" # Required
         }
       ]
     }
   }
 }
 
-output "azurerm_log_analytics_workspaces" {
-  description = "An object containing the Azure Log Analytics Workspace created by the module."
-  value       = module.azurerm_log_analytics_workspace.azurerm_log_analytics_workspaces
-  sensitive   = true
+output "azurerm_network_security_groups" {
+  description = "An object containing the Azure Network Security Groups created by the module."
+  value       = module.azurerm_network_security_group.azurerm_network_security_groups
 }
+
+
+module "azurerm_network_security_group" {
+  source  = "../modules/terraform-azurerm-network-security-group"
+  # version = "1.0.0"
+
+  azurerm_network_security_group_params = {
+    main_azurerm_network_security_group = {
+      name                = module.name.names["main_azurerm_network_security_group"].result # Required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name           # Required
+      location            = module.resource_group.resource_groups["main_rg"].location       # Required
+      tags                = module.tags.tags
+
+    security_rule = [
+        {
+          name                                       = "test123" # Required
+          description                                = null
+          protocol                                   = "Tcp" # Required
+          source_port_range                          = "*"   # Required if source_port_ranges is not specified.
+          source_port_ranges                         = null  # Required if source_port_range is not specified.
+          destination_port_range                     = "*"   # Required if destination_port_ranges is not specified.
+          destination_port_ranges                    = null  # Required if destination_port_range is not specified.
+          source_address_prefix                      = "*"   # Required if source_address_prefixes is not specified.
+          source_address_prefixes                    = null  # Required if source_address_prefix is not specified.
+          source_application_security_group_ids      = null
+          destination_address_prefix                 = "*"  # Required if destination_address_prefixes is not specified.
+          destination_address_prefixes               = null # Required if destination_address_prefix is not specified.
+          destination_application_security_group_ids = null
+          access                                     = "Allow"   # Required
+          priority                                   = 100       # Required
+          direction                                  = "Inbound" # Required
+        }
+      ]
+    }
+  }
+}
+
+# module "azurerm_log_analytics_workspace" {
+#   source  = "../modules/terraform-azurerm-log-analytics-workspace"
+
+#   azurerm_log_analytics_workspace_params = {
+#     main_log_analytics_workspace = {
+#       name                                    = module.name.names["main_log_analytics_workspace"].result  # Required
+#       resource_group_name                     = module.resource_group.resource_groups["main_rg"].name     # Required
+#       location                                = module.resource_group.resource_groups["main_rg"].location # Required
+#       allow_resource_only_permissions         = null
+#       local_authentication_disabled           = null
+#       sku                                     = null
+#       retention_in_days                       = null
+#       daily_quota_gb                          = null
+#       cmk_for_query_forced                    = null
+#       internet_ingestion_enabled              = null
+#       internet_query_enabled                  = null
+#       reservation_capacity_in_gb_per_day      = null # Can only be used when the sku is set to CapacityReservation
+#       data_collection_rule_id                 = null
+#       immediate_data_purge_on_30_days_enabled = null
+#       tags                                    = module.tags.tags
+
+#       identity = [
+#         {
+#          type = "SystemAssigned" 
+#          identity_ids = null  # Required if type is UserAssigned
+#         }
+#       ]
+#     }
+#   }
+# }
+
+# output "azurerm_log_analytics_workspaces" {
+#   description = "An object containing the Azure Log Analytics Workspace created by the module."
+#   value       = module.azurerm_log_analytics_workspace.azurerm_log_analytics_workspaces
+#   sensitive   = true
+# }
 
 
 
