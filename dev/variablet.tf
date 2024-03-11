@@ -4,13 +4,25 @@ variable "location" {
   description = "Location of the resource group"
 }
 
-variable "resource_group_name" {
+variable "environment" {
   type    = string
-  default = "global-rg"
+  default = "dev"
 }
 
-variable "storage_account" {
+variable "prefixes" {
   type    = string
-  default = "my-storage"
+  default = "dwh"
+}
+
+variable "address_space" {
+  default = ["10.0.0.0/8"]
+}
+
+variable "linux_subnet" {
+  default = ["10.52.132.0/24"]
+}
+
+variable "powerbi_subnet" {
+  default = ["10.52.133.0/24"]
 }
 

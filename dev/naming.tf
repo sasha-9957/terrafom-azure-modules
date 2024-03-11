@@ -3,9 +3,9 @@ module "name" {
 
   azurecaf_name_params = {
     main_rg = {
-      name           = "dev"
-      prefixes       = ["ch"]
-      suffixes       = ["eastus"]
+      name           = var.environment
+      prefixes       = [var.prefixes]
+      suffixes       = [var.location]
       random_length  = 3
       resource_type  = "azurerm_resource_group"
       resource_types = null
@@ -15,28 +15,12 @@ module "name" {
       passthrough    = null
       use_slug       = null
     }
-
-
-    # main_log_analytics_workspace = {
-    #   name           = "dev"
-    #   prefixes       = ["ch"]
-    #   suffixes       = ["eastus"]
-    #   random_length  = 3
-    #   resource_type  = "azurerm_log_analytics_workspace"
-    #   resource_types = null
-    #   clean_input    = true
-    #   random_seed    = null
-    #   separator      = null
-    #   passthrough    = null
-    #   use_slug       = null
-    # }
-
-    main_azurerm_network_security_group = {
-      name           = "dev"
-      prefixes       = ["ch"]
-      suffixes       = ["eastus"]
+    main_vnet = {
+      name           = var.environment
+      prefixes       = [var.prefixes]
+      suffixes       = [var.location]
       random_length  = 3
-      resource_type  = "azurerm_network_security_group"
+      resource_type  = "azurerm_virtual_network"
       resource_types = null
       clean_input    = true
       random_seed    = null
@@ -44,48 +28,31 @@ module "name" {
       passthrough    = null
       use_slug       = null
     }
-
-    main_security_rule = {
-      name           = "dev"
-      prefixes       = ["ch"]
-      suffixes       = ["eastus"]
+    subnet1 = {
+      name           = var.environment
+      prefixes       = ["${var.prefixes}-1"]
+      suffixes       = [var.location]
       random_length  = 3
-      resource_type  = "azurerm_network_security_rule"
+      resource_type  = "azurerm_subnet"
       resource_types = null
       clean_input    = true
       random_seed    = null
       separator      = null
       passthrough    = null
       use_slug       = null
-
     }
-
-    #     main_application_insights = {
-    #       name           = "dev"
-    #       prefixes       = ["ch"]
-    #       suffixes       = ["eastus"]
-    #       random_length  = 3
-    #       resource_type  = "azurerm_application_insights"
-    #       resource_types = null
-    #       clean_input    = true
-    #       random_seed    = null
-    #       separator      = null
-    #       passthrough    = null
-    #       use_slug       = null
-    #     }
-
-    #     main_azurerm_lb = {
-    #       name           = "dev"
-    #       prefixes       = ["ch"]
-    #       suffixes       = ["eastus"]
-    #       random_length  = 3
-    #       resource_type  = "azurerm_lb"
-    #       resource_types = null
-    #       clean_input    = true
-    #       random_seed    = null
-    #       separator      = null
-    #       passthrough    = null
-    #       use_slug       = null
-    #     }
+    subnet2 = {
+      name           = var.environment
+      prefixes       = ["${var.prefixes}-2"]
+      suffixes       = [var.location]
+      random_length  = 3
+      resource_type  = "azurerm_subnet"
+      resource_types = null
+      clean_input    = true
+      random_seed    = null
+      separator      = null
+      passthrough    = null
+      use_slug       = null
+    }
   }
 }

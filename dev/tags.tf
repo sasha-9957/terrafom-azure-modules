@@ -3,8 +3,8 @@ module "tags" {
 
   tags_params = {
     managed_by = "terraform"
-    dept       = "dev"
+    dept       = var.environment
     owner      = "DevOps"
-    intent     = "dev environment provisioning"
+    intent     = "${var.environment}-environment provisioning"
   }
 }
