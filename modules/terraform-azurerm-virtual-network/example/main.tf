@@ -25,16 +25,16 @@ module "virtual_network" {
       edge_zone               = null
       flow_timeout_in_minutes = null
       subnet = [
-        {
-          name           = "subnet1"     # required
-          address_prefix = "10.0.1.0/24" # required
-          security_group = null
-        },
-        {
-          name           = "subnet2"     # required
-          address_prefix = "10.0.2.0/24" # required
-          security_group = null
-        }
+        # {
+        #   name           = "subnet1"     # required
+        #   address_prefix = "10.0.1.0/24" # required
+        #   security_group = null
+        # },
+        # {
+        #   name           = "subnet2"     # required
+        #   address_prefix = "10.0.2.0/24" # required
+        #   security_group = null
+        # }
       ]
 
       tags = module.tags.tags

@@ -6,9 +6,9 @@ variable "azurerm_key_vault_access_policy_params" {
     tenant_id               = string # Required
     object_id               = string # Required
     application_id          = string
+    certificate_permissions = list(string)
     key_permissions         = list(string)
     secret_permissions      = list(string)
-    certificate_permissions = list(string)
     storage_permissions     = list(string)
   }))
 }

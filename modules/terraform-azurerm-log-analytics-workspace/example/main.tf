@@ -22,8 +22,8 @@ module "azurerm_log_analytics_workspace" {
 
       identity = [
         # {
-        #  type = "SystemAssigned" 
-        #  identity_ids = null  # Required if type is UserAssigned
+        #   type         = "SystemAssigned" # Required
+        #   identity_ids = null             # Required if type is UserAssigned
         # }
       ]
     }

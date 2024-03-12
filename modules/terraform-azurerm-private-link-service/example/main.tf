@@ -14,18 +14,18 @@ module "private_link_service" {
       tags                                        = null
       visibility_subscription_ids                 = null
 
-      nat_ip_configuration = [
+      nat_ip_configuration = [ # Required
         {
-          name                       = "primary"                                                              # Required
-          subnet_id                  = module.virtual_network.virtual_networks["main_vnet"].subnet["subnet1"] # Required
-          primary                    = true                                                                   # Required
+          name                       = "primary"                                                      # Required
+          subnet_id                  = module.virtual_network.virtual_networks["main_vnet"].subnet[0] # Required
+          primary                    = true                                                           # Required
           private_ip_address         = null
           private_ip_address_version = null
         },
         {
-          name                       = "secondary"                                                            # Required
-          subnet_id                  = module.virtual_network.virtual_networks["main_vnet"].subnet["subnet2"] # Required
-          primary                    = false                                                                  # Required
+          name                       = "secondary"                                                    # Required
+          subnet_id                  = module.virtual_network.virtual_networks["main_vnet"].subnet[1] # Required
+          primary                    = false                                                          # Required
           private_ip_address         = null
           private_ip_address_version = null
         }

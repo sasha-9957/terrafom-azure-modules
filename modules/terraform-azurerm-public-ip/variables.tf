@@ -18,7 +18,5 @@ variable "azurerm_public_ip_params" {
     sku                     = string
     sku_tier                = string
     tags                    = map(string)
-
-    create_before_destroy = bool
   }))
 }

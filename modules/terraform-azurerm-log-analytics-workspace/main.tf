@@ -22,7 +22,7 @@ resource "azurerm_log_analytics_workspace" "this" {
     for_each = each.value.identity
 
     content {
-      type         = i.value.type
+      type         = i.value.type         # Required
       identity_ids = i.value.identity_ids # Required if type is UserAssigned.
     }
   }

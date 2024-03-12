@@ -5,13 +5,13 @@ resource "azurerm_application_insights" "this" {
   resource_group_name                   = each.value.resource_group_name # Required
   location                              = each.value.location            # Required
   application_type                      = each.value.application_type    # Required
-  workspace_id                          = each.value.workspace_id
+  daily_data_cap_in_gb                  = each.value.daily_data_cap_in_gb
+  daily_data_cap_notifications_disabled = each.value.daily_data_cap_notifications_disabled
   retention_in_days                     = each.value.retention_in_days
   sampling_percentage                   = each.value.sampling_percentage
   disable_ip_masking                    = each.value.disable_ip_masking
-  daily_data_cap_in_gb                  = each.value.daily_data_cap_in_gb
+  workspace_id                          = each.value.workspace_id
   local_authentication_disabled         = each.value.local_authentication_disabled
-  daily_data_cap_notifications_disabled = each.value.daily_data_cap_notifications_disabled
   internet_ingestion_enabled            = each.value.internet_ingestion_enabled
   internet_query_enabled                = each.value.internet_ingestion_enabled
   force_customer_storage_for_profiler   = each.value.force_customer_storage_for_profiler

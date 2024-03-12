@@ -21,6 +21,6 @@ resource "azurerm_public_ip" "this" {
 
   # If this resource is to be associated with a resource that requires disassociation before destruction (such as azurerm_network_interface) it is recommended to set the lifecycle argument create_before_destroy = true.
   lifecycle {
-    create_before_destroy = each.value.create_before_destroy
+    create_before_destroy = true
   }
 }

@@ -33,7 +33,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_private_link_service"></a> [private\_link\_service](#output\_private\_link\_service) | An object containing the Private Link Services created by the module. |
+| <a name="output_private_link_services"></a> [private\_link\_services](#output\_private\_link\_services) | An object containing the Private Link Services created by the module. |
 <!-- markdown-table-prettify-ignore-end -->
 
 <!-- END_TF_DOCS -->

@@ -1,4 +1,4 @@
 output "load_balancers" {
-  description = "An object map for input parameters of the Load Balancer module."
+  description = "An object containing the Azure Load Balancers created by the module."
   value       = module.load_balancer.load_balancers
 }

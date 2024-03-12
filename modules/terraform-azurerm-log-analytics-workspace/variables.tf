@@ -19,7 +19,7 @@ variable "azurerm_log_analytics_workspace_params" {
     tags                                    = map(string)
 
     identity = list(object({
-      type         = string
+      type         = string      # Required
       identity_ids = set(string) # Required if type is UserAssigned.
     }))
   }))

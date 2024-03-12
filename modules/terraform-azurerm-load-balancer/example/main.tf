@@ -11,9 +11,10 @@ module "load_balancer" {
       sku                 = null
       sku_tier            = null
       tags                = module.tags.tags
+
       frontend_ip_configuration = [
         # {
-        #   name                                               = "frontend_name" # Required
+        #   name                                               = "frontend_ip_config1" # Required
         #   zones                                              = null
         #   subnet_id                                          = null
         #   gateway_load_balancer_frontend_ip_configuration_id = null

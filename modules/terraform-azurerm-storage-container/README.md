@@ -33,7 +33,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_azurerm_storage_containers"></a> [azurerm\_storage\_containers](#output\_azurerm\_storage\_containers) | An object containing the Storage Containers created by the module. |
+| <a name="output_storage_containers"></a> [storage\_containers](#output\_storage\_containers) | An object containing the Storage Containers created by the module. |
 <!-- markdown-table-prettify-ignore-end -->
 
 <!-- END_TF_DOCS -->

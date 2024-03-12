@@ -1,5 +1,5 @@
 variable "azurerm_lb_params" {
-  description = "Object map for Load Balancer module input parameters."
+  description = "Object map for Azure Load Balancer module input parameters."
 
   type = map(object({
     name                = string # Required
@@ -11,8 +11,8 @@ variable "azurerm_lb_params" {
     tags                = map(string)
 
     frontend_ip_configuration = list(object({
-      name                                               = string
-      zones                                              = list(number)
+      name                                               = string # Required
+      zones                                              = set(string)
       subnet_id                                          = string
       gateway_load_balancer_frontend_ip_configuration_id = string
       private_ip_address                                 = string

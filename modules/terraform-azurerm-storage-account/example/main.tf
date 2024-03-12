@@ -28,6 +28,179 @@ module "storage_account" {
       allowed_copy_scope                = null
       sftp_enabled                      = null
       tags                              = null
+
+      custom_domain = [
+        # {
+        #   name          = null # required
+        #   use_subdomain = null
+        # }
+      ]
+
+      customer_managed_key = [
+        # {
+        #   key_vault_key_id          = null # required
+        #   user_assigned_identity_id = null # required
+        # }
+      ]
+
+      identity = [
+        # {
+        #   type         = string
+        #   identity_ids = set(string)
+        # }
+      ]
+
+      blob_properties = [
+        # {
+        #   cors_rule = [
+        #     {
+        #       allowed_headers    = null # required
+        #       allowed_methods    = null # required
+        #       allowed_origins    = null # required
+        #       exposed_headers    = null # required
+        #       max_age_in_seconds = null # required
+        #     }
+        #   ]
+        #   delete_retention_policy = [
+        #     {
+        #       days = 7
+        #     }
+        #   ]
+        #   restore_policy = [
+        #     {
+        #       days = 7
+        #     }
+        #   ]
+        # }
+      ]
+
+      queue_properties = [
+        # {
+        #   cors_rule = [
+        #     {
+        #       allowed_headers    = null # required
+        #       allowed_methods    = null # required
+        #       allowed_origins    = null # required
+        #       exposed_headers    = null # required
+        #       max_age_in_seconds = null # required
+        #     }
+        #   ]
+        #   logging = [
+        #     {
+        #       delete                = null # required
+        #       read                  = null # required
+        #       version               = null # required
+        #       write                 = null # required
+        #       retention_policy_days = null
+        #     }
+        #   ]
+        #   minute_metrics = [
+        #     {
+        #       enabled               = null # required
+        #       version               = null # required
+        #       include_apis          = null
+        #       retention_policy_days = null
+        #     }
+        #   ]
+        #   hour_metrics = [
+        #     {
+        #       enabled               = null # required
+        #       version               = null # required
+        #       include_apis          = null
+        #       retention_policy_days = null
+        #     }
+        #   ]
+        # }
+      ]
+
+      static_website = [
+        # {
+        #   index_document     = null
+        #   error_404_document = null
+        # }
+      ]
+
+      share_properties = [
+        # {
+        #   cors_rule = [
+        #     {
+        #       allowed_headers    = null # required
+        #       allowed_methods    = null # required
+        #       allowed_origins    = null # required
+        #       exposed_headers    = null # required
+        #       max_age_in_seconds = null # required
+        #     }
+        #   ]
+        #   retention_policy = [
+        #     {
+        #       days = 7
+        #     }
+        #   ]
+        #   smb = [
+        #     {
+        #       versions                        = null
+        #       authentication_types            = null
+        #       kerberos_ticket_encryption_type = null
+        #       channel_encryption_type         = null
+        #       multichannel_enabled            = null
+        #     }
+        #   ]
+        # }
+      ]
+
+      network_rules = [
+        # {
+        #   default_action             = null # required
+        #   bypass                     = null
+        #   ip_rules                   = null
+        #   virtual_network_subnet_ids = null
+        #   private_link_access = [
+        #     {
+        #       endpoint_resource_id = null # required
+        #       endpoint_tenant_id   = null
+        #     }
+        #   ]
+        # }
+      ]
+
+      azure_files_authentication = [
+        # {
+        #   directory_type = string # required
+        #   active_directory = [
+        #     {
+        #       domain_name         = null # required
+        #       domain_guid         = null # required
+        #       domain_sid          = null
+        #       storage_sid         = null
+        #       forest_name         = null
+        #       netbios_domain_name = null
+        #     }
+        #   ]
+        # }
+      ]
+
+      routing = [
+        # {
+        #   publish_internet_endpoints  = null
+        #   publish_microsoft_endpoints = null
+        #   choice                      = null
+        # }
+      ]
+
+      immutability_policy = [
+        # {
+        #   allow_protected_append_writes = null # required
+        #   state                         = null # required
+        #   period_since_creation_in_days = null # required
+        # }
+      ]
+
+      sas_policy = [
+        # {
+        #   expiration_period = null # required
+        #   expiration_action = null
+        # }
+      ]
     }
   }
 }
