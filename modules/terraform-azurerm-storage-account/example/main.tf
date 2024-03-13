@@ -22,6 +22,7 @@ module "storage_account" {
       is_hns_enabled                    = null
       nfsv3_enabled                     = null
       large_file_share_enabled          = null
+      local_user_enabled                = null
       queue_encryption_key_type         = null
       table_encryption_key_type         = null
       infrastructure_encryption_enabled = null

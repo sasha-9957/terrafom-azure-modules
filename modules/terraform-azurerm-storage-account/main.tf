@@ -19,6 +19,7 @@ resource "azurerm_storage_account" "this" {
   is_hns_enabled                    = each.value.is_hns_enabled
   nfsv3_enabled                     = each.value.nfsv3_enabled
   large_file_share_enabled          = each.value.large_file_share_enabled
+  local_user_enabled                = each.value.local_user_enabled
   queue_encryption_key_type         = each.value.queue_encryption_key_type
   table_encryption_key_type         = each.value.table_encryption_key_type
   infrastructure_encryption_enabled = each.value.infrastructure_encryption_enabled

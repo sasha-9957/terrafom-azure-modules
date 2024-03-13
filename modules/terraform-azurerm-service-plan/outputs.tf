@@ -1,3 +1,4 @@
 output "azurerm_service_plans" {
-  value = azurerm_service_plan.this
+  description = "An object containing data created by the Azure Service Plan module."
+  value       = azurerm_service_plan.this
 }

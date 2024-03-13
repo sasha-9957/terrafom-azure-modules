@@ -1,5 +1,5 @@
 variable "azurerm_service_plan_params" {
-  description = "Object map for Azure Service Plans module input parameters."
+  description = "Object map for Azure Service Plan module input parameters."
 
   type = map(object({
     name                         = string # Required

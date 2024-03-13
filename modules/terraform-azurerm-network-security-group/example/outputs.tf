@@ -1,4 +1,4 @@
-output "azurerm_network_security_groups" {
+output "network_security_groups" {
   description = "An object containing the Azure Network Security Groups created by the module."
-  value       = module.azurerm_network_security_group.azurerm_network_security_groups
+  value       = module.network_security_group.network_security_groups
 }

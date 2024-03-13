@@ -3,8 +3,8 @@ module "public_ip" {
   version = "1.0.0"
 
   azurerm_public_ip_params = {
-    main_public_ip = {
-      name                    = module.name.names["main_public_ip"].result                # required
+    public_ip1 = {
+      name                    = module.name.names["public_ip1"].result                    # required
       resource_group_name     = module.resource_group.resource_groups["main_rg"].name     # required
       location                = module.resource_group.resource_groups["main_rg"].location # Required
       allocation_method       = "Static"                                                  # Required

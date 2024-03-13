@@ -27,10 +27,16 @@ module "azurerm_service_plan" {
       worker_count                 = null
       per_site_scaling_enabled     = null
       zone_balancing_enabled       = null
-      tags                         = null
+      tags                         = module.tags.tags
     }
   }
 }
+
+output "azurerm_service_plans" {
+  description = "An object containing data created by the Azure Service Plans module."
+  value       = module.azurerm_service_plan.azurerm_service_plans
+}
+
 
 # module "virtual_network" {
 #   source = "../modules/terraform-azurerm-virtual-network"

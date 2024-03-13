@@ -1,3 +1,0 @@
-provider "azuread" {
-  # Configuration options
-}

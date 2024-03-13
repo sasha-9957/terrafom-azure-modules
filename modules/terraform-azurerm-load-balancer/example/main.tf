@@ -21,7 +21,7 @@ module "load_balancer" {
         #   private_ip_address                                 = null
         #   private_ip_address_allocation                      = null
         #   private_ip_address_version                         = null
-        #   public_ip_address_id                               = module.public_ip.public_ips["main_public_ip"].id
+        #   public_ip_address_id                               = module.public_ip.public_ips["public_ip1"].id
         #   public_ip_prefix_id                                = null
         # }
       ]

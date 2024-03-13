@@ -1,0 +1,36 @@
+<!-- BEGIN_TF_DOCS -->
+<!-- markdown-table-prettify-ignore-start -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_cdn_frontdoor_rule.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_azurerm_cdn_frontdoor_rule_params"></a> [azurerm\_cdn\_frontdoor\_rule\_params](#input\_azurerm\_cdn\_frontdoor\_rule\_params) | Object map for Azure Front Door Rule module input parameters. | <pre>map(object({<br>    name                      = string # Required<br>    cdn_frontdoor_rule_set_id = string # Required<br>    order                     = number # Required<br>    behavior_on_match         = string<br><br>    actions = list(object({ # Required<br>      url_rewrite_action = list(object({<br>        source_pattern          = string # Required<br>        destination             = string # Required<br>        preserve_unmatched_path = bool<br>      }))<br>      url_redirect_action = list(object({<br>        redirect_type        = string # Required<br>        destination_hostname = string # Required<br>        redirect_protocol    = string<br>        destination_path     = string<br>        query_string         = string<br>        destination_fragment = string<br>      }))<br>      route_configuration_override_action = list(object({<br>        cache_duration                = string<br>        cdn_frontdoor_origin_group_id = string<br>        forwarding_protocol           = string<br>        query_string_caching_behavior = string<br>        query_string_parameters       = list(string) # Required query_string_caching_behavior is set to IncludeSpecifiedQueryStrings or IgnoreSpecifiedQueryStrings<br>        compression_enabled           = bool<br>        cache_behavior                = string<br>      }))<br>      request_header_action = list(object({<br>        header_action = string # Required<br>        header_name   = string # Required<br>        value         = string # Required if the header_action is set to Append or Overwrite<br>      }))<br>      response_header_action = list(object({<br>        header_action = string # Required<br>        header_name   = string # Required<br>        value         = string # Requiredis required if the header_action is set to Append or Overwrite<br>      }))<br>    }))<br><br>    conditions = list(object({<br>      remote_address_condition = list(object({<br>        operator         = string<br>        negate_condition = bool<br>        match_values     = list(string)<br>      }))<br>      request_method_condition = list(object({<br>        match_values     = set(string) # Required<br>        operator         = string<br>        negate_condition = bool<br>      }))<br>      query_string_condition = list(object({<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = set(string)<br>        transforms       = list(string)<br>      }))<br>      post_args_condition = list(object({<br>        post_args_name   = string # Required<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>        transforms       = set(string)<br>      }))<br>      request_uri_condition = list(object({<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>        transforms       = set(string)<br>      }))<br>      request_header_condition = list(object({<br>        header_name      = string # Required<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>        transforms       = set(string)<br>      }))<br>      request_body_condition = list(object({<br>        operator         = string       # Required<br>        match_values     = list(string) # Required<br>        negate_condition = bool<br>        transforms       = set(string)<br>      }))<br>      request_scheme_condition = list(object({<br>        operator         = string<br>        negate_condition = bool<br>        match_values     = list(string)<br>      }))<br>      url_path_condition = list(object({<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>        transforms       = set(string)<br>      }))<br>      url_file_extension_condition = list(object({<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string) # Required<br>        transforms       = set(string)<br>      }))<br>      url_filename_condition = list(object({<br>        operator         = string       # Required<br>        match_values     = list(string) # Required if the operator is set to value other than Any<br>        negate_condition = bool<br>        transforms       = set(string)<br>      }))<br>      http_version_condition = list(object({<br>        match_values     = set(string) # Required<br>        operator         = string<br>        negate_condition = bool<br>      }))<br>      cookies_condition = list(object({<br>        cookie_name      = string # Required<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>        transforms       = set(string)<br>      }))<br>      is_device_condition = list(object({<br>        operator         = string<br>        negate_condition = bool<br>        match_values     = list(string)<br>      }))<br>      socket_address_condition = list(object({<br>        operator         = string<br>        negate_condition = bool<br>        match_values     = list(string) # Required if operator field is set to IpMatch<br>      }))<br>      client_port_condition = list(object({<br>        operator         = string # Required<br>        negate_condition = bool<br>        match_values     = list(string)<br>      }))<br>      server_port_condition = list(object({<br>        operator         = string      # Required<br>        match_values     = set(string) # Required<br>        negate_condition = bool<br>      }))<br>      host_name_condition = list(object({<br>        operator         = string # Required<br>        match_values     = list(string)<br>        transforms       = set(string)<br>        negate_condition = bool<br>      }))<br>      ssl_protocol_condition = list(object({<br>        match_values     = set(string) # Required<br>        operator         = string<br>        negate_condition = bool<br>      }))<br>    }))<br>  }))</pre> | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_frontdoor_rules"></a> [frontdoor\_rules](#output\_frontdoor\_rules) | An object containing the Azure Front Door Rules created by the module. |
+<!-- markdown-table-prettify-ignore-end -->
+
+<!-- END_TF_DOCS -->

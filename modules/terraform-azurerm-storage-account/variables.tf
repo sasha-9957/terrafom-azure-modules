@@ -19,6 +19,7 @@ variable "azurerm_storage_account_params" {
     is_hns_enabled                    = bool
     nfsv3_enabled                     = bool
     large_file_share_enabled          = bool
+    local_user_enabled                = bool
     queue_encryption_key_type         = string
     table_encryption_key_type         = string
     infrastructure_encryption_enabled = bool

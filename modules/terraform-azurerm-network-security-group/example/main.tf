@@ -1,17 +1,17 @@
-module "azurerm_network_security_group" {
-  source  = "app.terraform.io/captionhealth/terraform-azurerm-network-security-group/azurerm"
+module "network_security_group" {
+  source  = "app.terraform.io/captionhealth/network-security-group/azurerm"
   version = "1.0.0"
 
   azurerm_network_security_group_params = {
     main_azurerm_network_security_group = {
-      name                = module.name.names["main_azurerm_network_security_group"].result # Required
-      resource_group_name = module.resource_group.resource_groups["main_rg"].name           # Required
-      location            = module.resource_group.resource_groups["main_rg"].location       # Required
+      name                = module.name.names["main_network_security_group"].result   # Required
+      resource_group_name = module.resource_group.resource_groups["main_rg"].name     # Required
+      location            = module.resource_group.resource_groups["main_rg"].location # Required
       tags                = module.tags.tags
 
       security_rule = [
         {
-          name                                       = module.name.names["main_security_rule"].result # Required
+          name                                       = module.name.names["network_security_group_rule1"].result # Required
           description                                = "Access to MSSQL"
           protocol                                   = "Tcp"                           # Required
           source_port_range                          = "*"                             # Required if source_port_ranges is not specified.

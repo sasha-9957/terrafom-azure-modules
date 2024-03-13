@@ -1,5 +1,6 @@
 module "azurerm_service_plan" {
   source = "app.terraform.io/captionhealth//terraform-azurerm-service-plan/azurerm"
+  version = "1.0.0"
 
   azurerm_service_plan_params = {
     main_service_plan = {
