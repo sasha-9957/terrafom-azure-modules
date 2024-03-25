@@ -428,6 +428,38 @@ module "azurerm_linux_function_app" {
         #   ]
         # }
       ]
+
+      connection_string = [
+        # {
+        #   name  = "myconnectionstring"      # Required
+        #   type  = "SQLAzure"                # Required
+        #   value = "myconnectionstringvalue" # Required, wrap the input into the sensitive() function.
+        # }
+      ]
+
+      identity = [
+        # {
+        #   type         = "SystemAssigned" # Required
+        #   identity_ids = null
+        # }
+      ]
+
+      storage_account = [
+        # {
+        #   access_key   = sensitive(data.azurerm_storage_account_keys.main_storage_account.keys[0].value) # Required, wrap the input into the sensitive() function.
+        #   account_name = module.storage_account.storage_accounts["main_storage_account"].name            # Required
+        #   name         = "somename"                                                                      # Required
+        #   share_name   = "sharedfolder"                                                                  # Required
+        #   type         = "AzureBlob"                                                                     # Required
+        #   mount_path   = null
+        # }
+      ]
+      sticky_settings = [
+        # {
+        #   app_setting_names       = null
+        #   connection_string_names = null
+        # }
+      ]
     }
   }
 }
