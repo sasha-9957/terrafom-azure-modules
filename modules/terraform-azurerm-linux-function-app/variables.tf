@@ -137,8 +137,8 @@ variable "azurerm_linux_function_app_params" {
       active_directory = list(object({
         client_id                  = string
         allowed_audiences          = set(string)
-        client_secret              = string
-        client_secret_setting_name = string
+        client_secret              = string # Cannot be used with client_secret_setting_name
+        client_secret_setting_name = string # Cannot be used with client_secret
       }))
 
       facebook = list(object({
@@ -287,6 +287,31 @@ variable "azurerm_linux_function_app_params" {
         retention_period_days    = number
         start_time               = string
       }))
+    }))
+
+    connection_string = list(object({
+      name  = string # Required
+      type  = string # Required
+      value = string # Required, wrap the input into the sensitive() function.
+    }))
+
+    identity = list(object({
+      type         = string # Required
+      identity_ids = set(string)
+    }))
+
+    storage_account = list(object({
+      access_key   = string # Required, wrap the input into the sensitive() function.
+      account_name = string # Required
+      name         = string # Required
+      share_name   = string # Required
+      type         = string # Required
+      mount_path   = string
+    }))
+
+    sticky_settings = list(object({
+      app_setting_names       = list(string)
+      connection_string_names = list(string)
     }))
   }))
 }

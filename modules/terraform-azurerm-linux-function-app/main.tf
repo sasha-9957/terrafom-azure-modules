@@ -414,4 +414,49 @@ resource "azurerm_linux_function_app" "this" {
       }
     }
   }
+
+  dynamic "connection_string" {
+    iterator = cs
+    for_each = each.value.connection_string
+
+    content {
+      name  = cs.value.name  # Required
+      type  = cs.value.type  # Required
+      value = cs.value.value # Required, wrap the input into the sensitive() function.
+    }
+  }
+
+  dynamic "identity" {
+    iterator = i
+    for_each = each.value.identity
+
+    content {
+      type         = i.value.type # Required
+      identity_ids = i.value.identity_ids
+    }
+  }
+
+  dynamic "storage_account" {
+    iterator = sa
+    for_each = each.value.storage_account
+
+    content {
+      access_key   = sa.value.access_key   # Required, wrap the input into the sensitive() function.
+      account_name = sa.value.account_name # Required
+      name         = sa.value.name         # Required
+      share_name   = sa.value.share_name   # Required
+      type         = sa.value.type         # Required
+      mount_path   = sa.value.mount_path
+    }
+  }
+
+  dynamic "sticky_settings" {
+    iterator = ss
+    for_each = each.value.sticky_settings
+
+    content {
+      app_setting_names       = ss.value.app_setting_names
+      connection_string_names = ss.value.connection_string_names
+    }
+  }
 }
