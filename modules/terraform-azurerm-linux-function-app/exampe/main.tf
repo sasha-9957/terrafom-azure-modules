@@ -1,99 +1,11 @@
-data "azuread_client_config" "current" {}
-
-resource "azuread_application" "this" {
-  display_name = "example"
-  owners       = [data.azuread_client_config.current.object_id]
-}
-#####
-
-module "resource_group" {
-  source = "../modules/terraform-azurerm-resource-group"
-
-  resource_group_params = {
-    main_rg = {
-      location   = var.location                        # required
-      name       = module.name.names["main_rg"].result # required
-      managed_by = null
-      tags       = module.tags.tags
-    }
-  }
-}
-
-module "azurerm_service_plan" {
-  source = "../modules/terraform-azurerm-service-plan"
-  azurerm_service_plan_params = {
-    main_service_plan = {
-      name                         = "example"                                                 # Required
-      location                     = module.resource_group.resource_groups["main_rg"].location # Required
-      os_type                      = "Linux"                                                   # Required
-      resource_group_name          = module.name.names["main_rg"].result                       # Required
-      sku_name                     = "P1v2"                                                    # Required
-      app_service_environment_id   = null
-      maximum_elastic_worker_count = null
-      worker_count                 = null
-      per_site_scaling_enabled     = null
-      zone_balancing_enabled       = null
-      tags                         = module.tags.tags
-    }
-  }
-}
-
-module "storage_account" {
-  source = "../modules/terraform-azurerm-storage-account"
-
-
-  azurerm_storage_account_params = {
-    main_storage_account = {
-      name                              = module.name.names["main_storage_account"].result          # required
-      resource_group_name               = module.resource_group.resource_groups["main_rg"].name     # Required
-      location                          = module.resource_group.resource_groups["main_rg"].location # Required
-      account_kind                      = null
-      account_tier                      = "Standard" # required
-      account_replication_type          = "LRS"      # required
-      cross_tenant_replication_enabled  = null
-      access_tier                       = null
-      edge_zone                         = null
-      enable_https_traffic_only         = null
-      min_tls_version                   = null
-      allow_nested_items_to_be_public   = null
-      shared_access_key_enabled         = null
-      public_network_access_enabled     = null
-      default_to_oauth_authentication   = null
-      is_hns_enabled                    = null
-      nfsv3_enabled                     = null
-      large_file_share_enabled          = null
-      local_user_enabled                = null
-      queue_encryption_key_type         = null
-      table_encryption_key_type         = null
-      infrastructure_encryption_enabled = null
-      allowed_copy_scope                = null
-      sftp_enabled                      = null
-      tags                              = null
-
-      custom_domain              = []
-      customer_managed_key       = []
-      identity                   = []
-      blob_properties            = []
-      queue_properties           = []
-      static_website             = []
-      share_properties           = []
-      network_rules              = []
-      azure_files_authentication = []
-      routing                    = []
-      immutability_policy        = []
-      sas_policy                 = []
-    }
-  }
-}
-
-######
 module "linux_function_app" {
-  source = "../modules/terraform-azurerm-linux-function-app"
+  source  = "app.terraform.io/captionhealth/linux-function-app/azurerm"
+  version = "1.0.0"
 
   azurerm_linux_function_app_params = {
     linux_function_app1 = {
       location                                       = module.resource_group.resource_groups["main_rg"].location                 # Required
-      name                                           = "dev-stamp-linux-function-eastus-1"                                                       # Required
+      name                                           = "dev-stamp-linux-function-eastus-1"                                       # Required
       resource_group_name                            = module.resource_group.resource_groups["main_rg"].name                     # Required
       service_plan_id                                = module.azurerm_service_plan.azurerm_service_plans["main_service_plan"].id # Required
       app_settings                                   = null
@@ -463,12 +375,3 @@ module "linux_function_app" {
     }
   }
 }
-
-output "linux_function_apps" {
-  description = "An object containing the Azure Linux Function apps created by the module."
-  value       = module.linux_function_app.linux_function_apps
-  sensitive   = true
-}
-
-
-

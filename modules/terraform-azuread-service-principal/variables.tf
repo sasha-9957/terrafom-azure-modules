@@ -1,5 +1,5 @@
 variable "azuread_service_principal_params" {
-  description = "Object map for Service Principal module input parameters."
+  description = "Object map for Azure Service Principal module input parameters."
 
   type = map(object({
     account_enabled               = bool
@@ -21,6 +21,7 @@ variable "azuread_service_principal_params" {
       gallery               = bool
       hide                  = bool
     }))
+
     saml_single_sign_on = list(object({
       relay_state = string
     }))

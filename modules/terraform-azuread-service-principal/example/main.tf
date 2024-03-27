@@ -1,13 +1,13 @@
-module "azuread_service_principal" {
+module "service_principal" {
   source  = "app.terraform.io/captionhealth/service-principal/azuread"
   version = "1.0.0"
 
   azuread_service_principal_params = {
-    main_service_principal = {
+    service_principal_1 = {
       account_enabled               = null
       alternative_names             = null
-      app_role_assignment_required  = false
-      client_id                     = azuread_application.this.client_id # Required
+      app_role_assignment_required  = null
+      client_id                     = module.azuread_application.azuread_applications["azad_app_1"].client_id # Required
       description                   = null
       login_url                     = null
       notes                         = null

@@ -1,5 +1,5 @@
-variable "service_principal_certificate_params" {
-  description = "Object map for Service Principal Certificate module input parameters."
+variable "azuread_service_principal_certificate_params" {
+  description = "Object map for Azure Service Principal Certificate module input parameters."
 
   type = map(object({
     encoding             = string

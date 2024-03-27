@@ -1,102 +1,143 @@
-resource "azurerm_linux_function_app" "this" {
-  for_each = var.azurerm_linux_function_app_params
+resource "azurerm_windows_web_app" "this" {
+  for_each = var.azurerm_windows_web_app_params
 
   location                                       = each.value.location            # Required
   name                                           = each.value.name                # Required
   resource_group_name                            = each.value.resource_group_name # Required
   service_plan_id                                = each.value.service_plan_id     # Required
   app_settings                                   = each.value.app_settings
-  builtin_logging_enabled                        = each.value.builtin_logging_enabled
+  client_affinity_enabled                        = each.value.client_affinity_enabled
   client_certificate_enabled                     = each.value.client_certificate_enabled
   client_certificate_mode                        = each.value.client_certificate_mode
   client_certificate_exclusion_paths             = each.value.client_certificate_exclusion_paths
-  daily_memory_time_quota                        = each.value.daily_memory_time_quota
   enabled                                        = each.value.enabled
-  content_share_force_disabled                   = each.value.content_share_force_disabled
-  functions_extension_version                    = each.value.functions_extension_version
   ftp_publish_basic_authentication_enabled       = each.value.ftp_publish_basic_authentication_enabled
   https_only                                     = each.value.https_only
   public_network_access_enabled                  = each.value.public_network_access_enabled
   key_vault_reference_identity_id                = each.value.key_vault_reference_identity_id
-  storage_account_access_key                     = each.value.storage_account_access_key # Conflicts with storage_uses_managed_identity
-  storage_account_name                           = each.value.storage_account_name
-  storage_uses_managed_identity                  = each.value.storage_uses_managed_identity # Conflicts with storage_account_access_key
-  storage_key_vault_secret_id                    = each.value.storage_key_vault_secret_id
+  tags                                           = each.value.tags
   virtual_network_subnet_id                      = each.value.virtual_network_subnet_id
   webdeploy_publish_basic_authentication_enabled = each.value.webdeploy_publish_basic_authentication_enabled
   zip_deploy_file                                = each.value.zip_deploy_file
 
-  dynamic "site_config" {
+  dynamic "site_config" { # Required
     iterator = sc
     for_each = each.value.site_config
 
     content {
-      always_on                                     = sc.value.always_on
-      api_definition_url                            = sc.value.api_definition_url
-      api_management_api_id                         = sc.value.api_management_api_id
-      app_command_line                              = sc.value.app_command_line
-      app_scale_limit                               = sc.value.app_scale_limit
-      application_insights_connection_string        = sc.value.application_insights_connection_string
-      application_insights_key                      = sc.value.application_insights_key
-      container_registry_managed_identity_client_id = sc.value.container_registry_managed_identity_client_id
-      container_registry_use_managed_identity       = sc.value.container_registry_use_managed_identity
-      default_documents                             = sc.value.default_documents
-      elastic_instance_minimum                      = sc.value.elastic_instance_minimum
-      ftps_state                                    = sc.value.ftps_state
-      health_check_path                             = sc.value.health_check_path
-      health_check_eviction_time_in_min             = sc.value.health_check_eviction_time_in_min
-      http2_enabled                                 = sc.value.http2_enabled
-      ip_restriction_default_action                 = sc.value.ip_restriction_default_action
-      load_balancing_mode                           = sc.value.load_balancing_mode
-      managed_pipeline_mode                         = sc.value.managed_pipeline_mode
-      minimum_tls_version                           = sc.value.minimum_tls_version
-      pre_warmed_instance_count                     = sc.value.pre_warmed_instance_count
-      remote_debugging_enabled                      = sc.value.remote_debugging_enabled
-      remote_debugging_version                      = sc.value.remote_debugging_version
-      runtime_scale_monitoring_enabled              = sc.value.runtime_scale_monitoring_enabled
-      scm_ip_restriction_default_action             = sc.value.scm_ip_restriction_default_action
-      scm_minimum_tls_version                       = sc.value.scm_minimum_tls_version
-      scm_use_main_ip_restriction                   = sc.value.scm_use_main_ip_restriction
-      use_32_bit_worker                             = sc.value.use_32_bit_worker
-      vnet_route_all_enabled                        = sc.value.vnet_route_all_enabled
-      websockets_enabled                            = sc.value.websockets_enabled
-      worker_count                                  = sc.value.worker_count
-
+      always_on                                     = each.value.always_on
+      api_definition_url                            = each.value.api_definition_url
+      api_management_api_id                         = each.value.api_management_api_id
+      app_command_line                              = each.value.app_command_line
+      auto_heal_enabled                             = each.value.auto_heal_enabled
+      container_registry_managed_identity_client_id = each.value.container_registry_managed_identity_client_id
+      container_registry_use_managed_identity       = each.value.container_registry_use_managed_identity
+      default_documents                             = each.value.default_documents
+      ftps_state                                    = each.value.ftps_state
+      health_check_path                             = each.value.health_check_path
+      health_check_eviction_time_in_min             = each.value.health_check_eviction_time_in_min
+      http2_enabled                                 = each.value.http2_enabled
+      ip_restriction_default_action                 = each.value.ip_restriction_default_action
+      load_balancing_mode                           = each.value.load_balancing_mode
+      local_mysql_enabled                           = each.value.local_mysql_enabled
+      managed_pipeline_mode                         = each.value.managed_pipeline_mode
+      minimum_tls_version                           = each.value.minimum_tls_version
+      remote_debugging_enabled                      = each.value.remote_debugging_enabled
+      remote_debugging_version                      = each.value.remote_debugging_version
+      scm_ip_restriction_default_action             = each.value.scm_ip_restriction_default_action
+      scm_minimum_tls_version                       = each.value.scm_minimum_tls_version
+      scm_use_main_ip_restriction                   = each.value.scm_use_main_ip_restriction
+      use_32_bit_worker                             = each.value.use_32_bit_worker
+      vnet_route_all_enabled                        = each.value.vnet_route_all_enabled
+      websockets_enabled                            = each.value.websockets_enabled
+      worker_count                                  = each.value.worker_count
       dynamic "application_stack" {
         iterator = appst
         for_each = sc.value.application_stack
 
         content {
-          dotnet_version              = sc.value.dotnet_version
-          use_dotnet_isolated_runtime = sc.value.use_dotnet_isolated_runtime
-          java_version                = sc.value.java_version
-          node_version                = sc.value.node_version
-          python_version              = sc.value.python_version
-          powershell_core_version     = sc.value.powershell_core_version
-          use_custom_runtime          = sc.value.use_custom_runtime
-
-          dynamic "docker" {
-            iterator = d
-            for_each = appst.value.docker
-
-            content {
-              registry_url      = d.value.registry_url
-              image_name        = d.value.image_name
-              image_tag         = d.value.image_tag
-              registry_username = d.value.registry_username
-              registry_password = d.value.registry_password # wrap the input into the sensitive() function.
-            }
-          }
+          current_stack                = appst.value.current_stack
+          docker_image_name            = appst.value.docker_image_name
+          docker_registry_url          = appst.value.docker_registry_url
+          docker_registry_username     = appst.value.docker_registry_username
+          docker_registry_password     = appst.value.docker_registry_password # wrap the input into the sensitive() function.
+          docker_container_name        = appst.value.docker_container_name
+          docker_container_tag         = appst.value.docker_container_tag
+          dotnet_version               = appst.value.dotnet_version
+          dotnet_core_version          = appst.value.dotnet_core_version
+          tomcat_version               = appst.value.tomcat_version
+          java_embedded_server_enabled = appst.value.java_embedded_server_enabled
+          java_version                 = appst.value.java_version
+          node_version                 = appst.value.node_version
+          php_version                  = appst.value.php_version
+          python                       = appst.value.python
         }
       }
 
-      dynamic "app_service_logs" {
-        iterator = appsl
-        for_each = sc.value.app_service_logs
+      dynamic "auto_heal_setting" {
+        iterator = ahs
+        for_each = sc.value.auto_heal_setting
 
         content {
-          disk_quota_mb         = appsl.value.disk_quota_mb
-          retention_period_days = appsl.value.retention_period_days
+          dynamic "action" { # Required
+            iterator = an
+            for_each = ahs.value.action
+
+            content {
+              action_type                    = an.value.action_type # Required
+              minimum_process_execution_time = an.value.minimum_process_execution_time
+              dynamic "custom_action" {
+                iterator = ca
+                for_each = an.value.custom_action
+
+                content {
+                  executable = ca.value.executable # Required
+                  parameters = ca.value.parameters
+                }
+              }
+            }
+          }
+          dynamic "trigger" { # Required
+            iterator = tr
+            for_each = ahs.value.trigger
+
+            content {
+              private_memory_kb = tr.validate_nonce.private_memory_kb
+              dynamic "requests" {
+                iterator = r
+                for_each = tr.value.requests
+
+                content {
+                  count    = r.value.count    # Required
+                  interval = r.value.interval # Required
+                }
+              }
+              dynamic "slow_request" {
+                iterator = sr
+                for_each = tr.value.slow_request
+
+                content {
+                  count      = sr.value.count      # Required
+                  interval   = sr.value.interval   # Required
+                  time_taken = sr.value.time_taken # Required
+                  path       = sr.value.path
+                }
+              }
+              dynamic "status_code" {
+                iterator = stc
+                for_each = tr.value.status_code
+
+                content {
+                  count             = stc.value.count             # Required
+                  interval          = stc.value.interval          # Required
+                  status_code_range = stc.value.status_code_range # Required
+                  path              = stc.value.path
+                  sub_status        = stc.value.sub_status
+                  win32_status_code = stc.value.win32_status_code
+                }
+              }
+            }
+          }
         }
       }
 
@@ -121,6 +162,7 @@ resource "azurerm_linux_function_app" "this" {
           priority                  = ipr.value.priority
           service_tag               = ipr.value.service_tag
           virtual_network_subnet_id = ipr.value.virtual_network_subnet_id
+          # description               = ipr.value.description
 
           dynamic "headers" {
             iterator = h
@@ -158,6 +200,26 @@ resource "azurerm_linux_function_app" "this" {
               x_fd_health_probe = h.value.x_fd_health_probe
               x_forwarded_for   = h.value.x_forwarded_for
               x_forwarded_host  = h.value.x_forwarded_host
+            }
+          }
+        }
+      }
+
+      dynamic "virtual_application" {
+        iterator = va
+        for_each = sc.value.virtual_application
+
+        content {
+          physical_path = va.value.physical_path # Required
+          preload       = va.value.preload       # Required
+          virtual_path  = va.value.virtual_path  # Required
+          dynamic "virtual_directory" {
+            iterator = vd
+            for_each = va.value.virtual_directory
+
+            content {
+              physical_path = vd.value.physical_path
+              virtual_path  = vd.value.virtual_path
             }
           }
         }
@@ -436,6 +498,69 @@ resource "azurerm_linux_function_app" "this" {
     }
   }
 
+  dynamic "logs" {
+    iterator = l
+    for_each = each.value.logs
+
+    content {
+      detailed_error_messages = l.value.detailed_error_messages
+      failed_request_tracing  = l.value.failed_request_tracing
+      dynamic "application_logs" {
+        iterator = al
+        for_each = l.value.application_logs
+
+        content {
+          file_system_level = al.value.file_system_level # Required
+          dynamic "azure_blob_storage" {
+            iterator = abs
+            for_each = al.value.azure_blob_storage
+
+            content {
+              level             = abs.value.level             # Required
+              retention_in_days = abs.value.retention_in_days # Required
+              sas_url           = abs.value.sas_url           # Required
+            }
+          }
+        }
+      }
+      dynamic "http_logs" {
+        iterator = hl
+        for_each = l.value.http_logs
+
+        content {
+          dynamic "azure_blob_storage" {
+            iterator = abs
+            for_each = hl.value.azure_blob_storage
+
+            content {
+              retention_in_days = abs.value.retention_in_days # Required
+              sas_url           = abs.value.sas_url           # Required
+            }
+          }
+          dynamic "file_system" {
+            iterator = fs
+            for_each = hl.value.file_system
+
+            content {
+              retention_in_days = fs.value.retention_in_days # Required
+              retention_in_mb   = fs.value.retention_in_mb   # Required
+            }
+          }
+        }
+      }
+    }
+  }
+
+  dynamic "sticky_settings" {
+    iterator = ss
+    for_each = each.value.sticky_settings
+
+    content {
+      app_setting_names       = ss.value.app_setting_names
+      connection_string_names = ss.value.connection_string_names
+    }
+  }
+
   dynamic "storage_account" {
     iterator = sa
     for_each = each.value.storage_account
@@ -447,16 +572,6 @@ resource "azurerm_linux_function_app" "this" {
       share_name   = sa.value.share_name   # Required
       type         = sa.value.type         # Required
       mount_path   = sa.value.mount_path
-    }
-  }
-
-  dynamic "sticky_settings" {
-    iterator = ss
-    for_each = each.value.sticky_settings
-
-    content {
-      app_setting_names       = ss.value.app_setting_names
-      connection_string_names = ss.value.connection_string_names
     }
   }
 }

@@ -1,5 +1,5 @@
 resource "azuread_service_principal_certificate" "this" {
-  for_each = var.service_principal_certificate_params
+  for_each = var.azuread_service_principal_certificate_params
 
   encoding             = each.value.encoding
   end_date             = each.value.end_date

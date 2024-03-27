@@ -1,57 +1,45 @@
-variable "azurerm_linux_function_app_params" {
-  description = "Object map for Azure Linux Function app module input parameters."
-
+variable "azurerm_windows_web_app_params" {
+  description = "Object map for Azure Resource Groups module input parameters."
   type = map(object({
     location                                       = string # Required
     name                                           = string # Required
     resource_group_name                            = string # Required
     service_plan_id                                = string # Required
     app_settings                                   = map(string)
-    builtin_logging_enabled                        = bool
+    client_affinity_enabled                        = bool
     client_certificate_enabled                     = bool
     client_certificate_mode                        = string
     client_certificate_exclusion_paths             = string
-    daily_memory_time_quota                        = number
     enabled                                        = bool
-    content_share_force_disabled                   = bool
-    functions_extension_version                    = string
     ftp_publish_basic_authentication_enabled       = bool
     https_only                                     = bool
     public_network_access_enabled                  = bool
     key_vault_reference_identity_id                = string
-    storage_account_access_key                     = string # Conflicts with storage_uses_managed_identity
-    storage_account_name                           = string
-    storage_uses_managed_identity                  = bool # Conflicts with storage_account_access_key
-    storage_key_vault_secret_id                    = string
+    tags                                           = map(string)
     virtual_network_subnet_id                      = string
     webdeploy_publish_basic_authentication_enabled = bool
     zip_deploy_file                                = string
-    tags                                           = map(string)
 
     site_config = list(object({ # Required
       always_on                                     = bool
       api_definition_url                            = string
       api_management_api_id                         = string
       app_command_line                              = string
-      app_scale_limit                               = number
-      application_insights_connection_string        = string
-      application_insights_key                      = string
+      auto_heal_enabled                             = bool
       container_registry_managed_identity_client_id = string
       container_registry_use_managed_identity       = bool
-      default_documents                             = set(string)
-      elastic_instance_minimum                      = number
+      default_documents                             = list(string)
       ftps_state                                    = string
       health_check_path                             = string
       health_check_eviction_time_in_min             = number
       http2_enabled                                 = bool
       ip_restriction_default_action                 = string
       load_balancing_mode                           = string
+      local_mysql_enabled                           = bool
       managed_pipeline_mode                         = string
       minimum_tls_version                           = string
-      pre_warmed_instance_count                     = number
       remote_debugging_enabled                      = bool
       remote_debugging_version                      = string
-      runtime_scale_monitoring_enabled              = bool
       scm_ip_restriction_default_action             = string
       scm_minimum_tls_version                       = string
       scm_use_main_ip_restriction                   = bool
@@ -61,72 +49,115 @@ variable "azurerm_linux_function_app_params" {
       worker_count                                  = number
 
       application_stack = list(object({
-        dotnet_version              = string
-        use_dotnet_isolated_runtime = bool
-        java_version                = string
-        node_version                = string
-        python_version              = string
-        powershell_core_version     = string
-        use_custom_runtime          = string
-
-        docker = list(object({
-          registry_url      = string
-          image_name        = string
-          image_tag         = string
-          registry_username = string
-          registry_password = string # wrap the input into the sensitive() function.
-        }))
+        current_stack                = string
+        docker_image_name            = string
+        docker_registry_url          = string
+        docker_registry_username     = string
+        docker_registry_password     = string # wrap the input into the sensitive() function.
+        docker_container_name        = string
+        docker_container_tag         = string
+        dotnet_version               = string
+        dotnet_core_version          = string
+        tomcat_version               = string
+        java_embedded_server_enabled = bool
+        java_version                 = string
+        node_version                 = string
+        php_version                  = string
+        python                       = bool
       }))
 
-      app_service_logs = list(object({
-        disk_quota_mb         = number
-        retention_period_days = number
+      auto_heal_setting = list(object({
+        action = list(object({                    # Required
+          action_type                    = string # Required
+          minimum_process_execution_time = string
+
+          custom_action = list(object({
+            executable = string # Required
+            parameters = string
+          }))
+        }))
+
+        trigger = list(object({ # Required
+          private_memory_kb = number
+
+          requests = list(object({
+            count    = number # Required
+            interval = string # Required
+          }))
+
+          slow_request = list(object({
+            count      = number # Required
+            interval   = string # Required
+            time_taken = string # Required
+            path       = string
+          }))
+
+          status_code = list(object({
+            count             = number # Required
+            interval          = string # Required
+            status_code_range = string # Required
+            path              = string
+            sub_status        = number
+            win32_status      = number
+          }))
+        }))
       }))
 
       cors = list(object({
         allowed_origins     = set(string)
         support_credentials = bool
-      }))
 
-      ip_restriction = list(object({
-        action                    = string
-        ip_address                = string
-        name                      = string
-        priority                  = number
-        service_tag               = string
-        virtual_network_subnet_id = string
-        # description               = string
+        ip_restriction = list(object({
+          action                    = string
+          ip_address                = string
+          name                      = string
+          priority                  = number
+          service_tag               = string
+          virtual_network_subnet_id = string
+          # description               = string
 
-        headers = list(object({
-          x_azure_fdid      = list(string)
-          x_fd_health_probe = list(string)
-          x_forwarded_for   = list(string)
-          x_forwarded_host  = list(string)
+          headers = list(object({
+            x_azure_fdid      = list(string)
+            x_fd_health_probe = list(string)
+            x_forwarded_for   = list(string)
+            x_forwarded_host  = list(string)
+          }))
         }))
-      }))
 
-      scm_ip_restriction = list(object({
-        action                    = string
-        ip_address                = string
-        name                      = string
-        priority                  = number
-        service_tag               = string
-        virtual_network_subnet_id = string
-        # description               = string
+        scm_ip_restriction = list(object({
+          action                    = string
+          ip_address                = string
+          name                      = string
+          priority                  = number
+          service_tag               = string
+          virtual_network_subnet_id = string
+          # description               = string
 
-        headers = list(object({
-          x_azure_fdid      = list(string)
-          x_fd_health_probe = list(string)
-          x_forwarded_for   = list(string)
-          x_forwarded_host  = list(string)
+          headers = list(object({
+            x_azure_fdid      = list(string)
+            x_fd_health_probe = list(string)
+            x_forwarded_for   = list(string)
+            x_forwarded_host  = list(string)
+          }))
+        }))
+
+        virtual_application = list(object({
+          physical_path = string # Required
+          preload       = bool   # Required
+          virtual_path  = string # Required
+
+          virtual_directory = list(object({
+            physical_path = string
+            virtual_path  = string
+          }))
         }))
       }))
     }))
 
     auth_settings = list(object({
-      enabled                        = bool
+      enabled                        = bool # Required
       additional_login_parameters    = map(string)
-      allowed_external_redirect_urls = set(string)
+      allowed_external_redirect_urls = list(string)
       default_provider               = string
       issuer                         = string
       runtime_version                = string
@@ -135,10 +166,10 @@ variable "azurerm_linux_function_app_params" {
       unauthenticated_client_action  = string
 
       active_directory = list(object({
-        client_id                  = string
-        allowed_audiences          = set(string)
-        client_secret              = string # Cannot be used with client_secret_setting_name
-        client_secret_setting_name = string # Cannot be used with client_secret
+        client_id                  = string # Required
+        allowed_audiences          = list(string)
+        client_secret              = string # wrap the input into the sensitive() function.
+        client_secret_setting_name = string
       }))
 
       facebook = list(object({
@@ -300,6 +331,38 @@ variable "azurerm_linux_function_app_params" {
       identity_ids = set(string)
     }))
 
+    logs = list(object({
+      detailed_error_messages = bool
+      failed_request_tracing  = bool
+
+      application_logs = list(object({
+        file_system_level = string # Required
+
+        azure_blob_storage = list(object({
+          level             = string # Required
+          retention_in_days = number # Required
+          sas_url           = string # Required
+        }))
+      }))
+
+      http_logs = list(object({
+        azure_blob_storage = list(object({
+          retention_in_days = number # Required
+          sas_url           = string # Required, wrap the input into the sensitive() function.
+        }))
+
+        file_system = list(object({
+          retention_in_days = number # Required
+          retention_in_mb   = number # Required
+        }))
+      }))
+    }))
+
+    sticky_settings = list(object({
+      app_setting_names       = list(string)
+      connection_string_names = list(string)
+    }))
+
     storage_account = list(object({
       access_key   = string # Required, wrap the input into the sensitive() function.
       account_name = string # Required
@@ -307,11 +370,6 @@ variable "azurerm_linux_function_app_params" {
       share_name   = string # Required
       type         = string # Required
       mount_path   = string
-    }))
-
-    sticky_settings = list(object({
-      app_setting_names       = list(string)
-      connection_string_names = list(string)
     }))
   }))
 }

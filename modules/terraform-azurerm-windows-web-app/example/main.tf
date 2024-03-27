@@ -1,148 +1,49 @@
-data "azuread_client_config" "current" {}
+module "windows_web_app" {
+  source  = "app.terraform.io/captionhealth/windows-web-app/azurerm"
+  version = "1.0.0"
 
-resource "azuread_application" "this" {
-  display_name = "example"
-  owners       = [data.azuread_client_config.current.object_id]
-}
-#####
-
-module "resource_group" {
-  source = "../modules/terraform-azurerm-resource-group"
-
-  resource_group_params = {
-    main_rg = {
-      location   = var.location                        # required
-      name       = module.name.names["main_rg"].result # required
-      managed_by = null
-      tags       = module.tags.tags
-    }
-  }
-}
-
-module "azurerm_service_plan" {
-  source = "../modules/terraform-azurerm-service-plan"
-  azurerm_service_plan_params = {
-    main_service_plan = {
-      name                         = "example"                                                 # Required
-      location                     = module.resource_group.resource_groups["main_rg"].location # Required
-      os_type                      = "Linux"                                                   # Required
-      resource_group_name          = module.name.names["main_rg"].result                       # Required
-      sku_name                     = "P1v2"                                                    # Required
-      app_service_environment_id   = null
-      maximum_elastic_worker_count = null
-      worker_count                 = null
-      per_site_scaling_enabled     = null
-      zone_balancing_enabled       = null
-      tags                         = module.tags.tags
-    }
-  }
-}
-
-module "storage_account" {
-  source = "../modules/terraform-azurerm-storage-account"
-
-
-  azurerm_storage_account_params = {
-    main_storage_account = {
-      name                              = module.name.names["main_storage_account"].result          # required
-      resource_group_name               = module.resource_group.resource_groups["main_rg"].name     # Required
-      location                          = module.resource_group.resource_groups["main_rg"].location # Required
-      account_kind                      = null
-      account_tier                      = "Standard" # required
-      account_replication_type          = "LRS"      # required
-      cross_tenant_replication_enabled  = null
-      access_tier                       = null
-      edge_zone                         = null
-      enable_https_traffic_only         = null
-      min_tls_version                   = null
-      allow_nested_items_to_be_public   = null
-      shared_access_key_enabled         = null
-      public_network_access_enabled     = null
-      default_to_oauth_authentication   = null
-      is_hns_enabled                    = null
-      nfsv3_enabled                     = null
-      large_file_share_enabled          = null
-      local_user_enabled                = null
-      queue_encryption_key_type         = null
-      table_encryption_key_type         = null
-      infrastructure_encryption_enabled = null
-      allowed_copy_scope                = null
-      sftp_enabled                      = null
-      tags                              = null
-
-      custom_domain              = []
-      customer_managed_key       = []
-      identity                   = []
-      blob_properties            = []
-      queue_properties           = []
-      static_website             = []
-      share_properties           = []
-      network_rules              = []
-      azure_files_authentication = []
-      routing                    = []
-      immutability_policy        = []
-      sas_policy                 = []
-    }
-  }
-}
-
-######
-module "linux_function_app" {
-  source = "../modules/terraform-azurerm-linux-function-app"
-
-  azurerm_linux_function_app_params = {
-    linux_function_app1 = {
-      location                                       = module.resource_group.resource_groups["main_rg"].location                 # Required
-      name                                           = "dev-stamp-linux-function-eastus-1"                                                       # Required
-      resource_group_name                            = module.resource_group.resource_groups["main_rg"].name                     # Required
-      service_plan_id                                = module.azurerm_service_plan.azurerm_service_plans["main_service_plan"].id # Required
+  azurerm_windows_web_app_params = {
+    windows_web_app1 = {
+      location                                       = module.resource_group.resource_groups["main_rg"].location # Required
+      name                                           = "dev-stamp-winapp-eastus-1"                               # Required
+      resource_group_name                            = module.resource_group.resource_groups["main_rg"].name     # Required
+      service_plan_id                                = module.service_plan.service_plans["service_plan1"].id     # Required
       app_settings                                   = null
-      builtin_logging_enabled                        = null
+      client_affinity_enabled                        = null
       client_certificate_enabled                     = null
       client_certificate_mode                        = null
       client_certificate_exclusion_paths             = null
-      daily_memory_time_quota                        = null
       enabled                                        = null
-      content_share_force_disabled                   = null
-      functions_extension_version                    = null
       ftp_publish_basic_authentication_enabled       = null
       https_only                                     = null
       public_network_access_enabled                  = null
       key_vault_reference_identity_id                = null
-      storage_account_access_key                     = null # Conflicts with storage_uses_managed_identity
-      storage_account_name                           = module.storage_account.storage_accounts["main_storage_account"].name
-      storage_uses_managed_identity                  = null # Conflicts with storage_account_access_key
-      storage_key_vault_secret_id                    = null
+      tags                                           = null
       virtual_network_subnet_id                      = null
       webdeploy_publish_basic_authentication_enabled = null
       zip_deploy_file                                = null
-      tags                                           = null
 
-      site_config = [
+      site_config = [ # Required
         {
           always_on                                     = null
           api_definition_url                            = null
           api_management_api_id                         = null
           app_command_line                              = null
-          app_scale_limit                               = null
-          application_insights_connection_string        = null
-          application_insights_key                      = null
+          auto_heal_enabled                             = null
           container_registry_managed_identity_client_id = null
           container_registry_use_managed_identity       = null
           default_documents                             = null
-          elastic_instance_minimum                      = null
           ftps_state                                    = null
           health_check_path                             = null
           health_check_eviction_time_in_min             = null
           http2_enabled                                 = null
           ip_restriction_default_action                 = null
           load_balancing_mode                           = null
+          local_mysql_enabled                           = null
           managed_pipeline_mode                         = null
           minimum_tls_version                           = null
-          pre_warmed_instance_count                     = null
           remote_debugging_enabled                      = null
           remote_debugging_version                      = null
-          runtime_scale_monitoring_enabled              = null
           scm_ip_restriction_default_action             = null
           scm_minimum_tls_version                       = null
           scm_use_main_ip_restriction                   = null
@@ -153,36 +54,82 @@ module "linux_function_app" {
 
           application_stack = [
             # {
-            #   dotnet_version              = null
-            #   use_dotnet_isolated_runtime = null
-            #   java_version                = null
-            #   node_version                = null
-            #   python_version              = null
-            #   powershell_core_version     = null
-            #   use_custom_runtime          = null
-            #   docker = [
+            #   current_stack                = null
+            #   docker_image_name            = null
+            #   docker_registry_url          = null
+            #   docker_registry_username     = null
+            #   docker_registry_password     = null # wrap the input into the sensitive() function.
+            #   docker_container_name        = null
+            #   docker_container_tag         = null
+            #   dotnet_version               = null
+            #   dotnet_core_version          = null
+            #   tomcat_version               = null
+            #   java_embedded_server_enabled = null
+            #   java_version                 = null
+            #   node_version                 = null
+            #   php_version                  = null
+            #   python                       = null
+            # }
+          ]
+
+          auto_heal_setting = [
+            # {
+            #   action = [ # Required
             #     {
-            #       registry_url      = null
-            #       image_name        = null
-            #       image_tag         = null
-            #       registry_username = null
-            #       registry_password = null # wrap the input into the sensitive() function.
+            #       action_type                    = an.value.action_type # Required
+            #       minimum_process_execution_time = an.value.minimum_process_execution_time
+
+            #       custom_action = [
+            #         {
+            #           executable = ca.value.executable # Required
+            #           parameters = ca.value.parameters
+            #         }
+            #       ]
+            #     }
+            #   ]
+
+            #   trigger = [ # Required
+            #     {
+            #       private_memory_kb = tr.validate_nonce.private_memory_kb
+
+            #       requests = [
+            #         {
+            #           count    = 2          # Required
+            #           interval = "00:05:00" # Required
+            #         }
+            #       ]
+            #     }
+            #   ]
+
+            #   slow_request = [
+            #     {
+            #       count      = 2          # Required
+            #       interval   = "00:10:00" # Required
+            #       time_taken = "00:15:00" # Required
+            #       path       = null
+            #     }
+            #   ]
+
+            #   status_code = [
+            #     {
+            #       count             = 3          # Required
+            #       interval          = "00:15:00" # Required
+            #       status_code_range = ["500"]    # Required
+            #       path              = null
+            #       sub_status        = null
+            #       win32_status      = null
             #     }
             #   ]
             # }
           ]
-          app_service_logs = [
-            # {
-            #   disk_quota_mb         = null
-            #   retention_period_days = null
-            # }
-          ]
+
           cors = [
             # {
-            #   allowed_origins     = null
+            #   allowed_origins     = ["portal.azure.com"]
             #   support_credentials = null
             # }
           ]
+
           ip_restriction = [
             # {
             #   action                    = null
@@ -192,6 +139,7 @@ module "linux_function_app" {
             #   service_tag               = null
             #   virtual_network_subnet_id = null
             #   # description               = null
+
             #   headers = [
             #     {
             #       x_azure_fdid      = null
@@ -202,6 +150,7 @@ module "linux_function_app" {
             #   ]
             # }
           ]
+
           scm_ip_restriction = [
             # {
             #   action                    = null
@@ -222,11 +171,27 @@ module "linux_function_app" {
             #   ]
             # }
           ]
+
+          virtual_application = [
+            # {
+            #   physical_path = ""   # Required
+            #   preload       = true # Required
+            #   virtual_path  = ""   # Required
+
+            #   virtual_directory = [
+            #     {
+            #       physical_path = null
+            #       virtual_path  = null
+            #     }
+            #   ]
+            # }
+          ]
         }
       ]
+
       auth_settings = [
         # {
-        #   enabled                        = null
+        #   enabled                        = false # Required
         #   additional_login_parameters    = null
         #   allowed_external_redirect_urls = null
         #   default_provider               = null
@@ -290,6 +255,7 @@ module "linux_function_app" {
         #   ]
         # }
       ]
+
       auth_settings_v2 = [
         # {
         #   auth_enabled                            = null
@@ -444,6 +410,52 @@ module "linux_function_app" {
         # }
       ]
 
+      logs = [
+        # {
+        #   detailed_error_messages = null
+        #   failed_request_tracing  = null
+
+        #   application_logs = [
+        #     {
+        #       file_system_level = "Off" # Required
+
+        #       azure_blob_storage = [
+        #         {
+        #           level             = "Error"                                                   # Required
+        #           retention_in_days = 0                                                         # Required
+        #           sas_url           = data.azurerm_storage_account_sas.main_storage_account.sas # Required
+        #         }
+        #       ]
+        #     }
+        #   ]
+
+        #   http_logs = [
+        #     {
+        #       azure_blob_storage = [
+        #         {
+        #           retention_in_days = 0                                                         # Required
+        #           sas_url           = data.azurerm_storage_account_sas.main_storage_account.sas # Required
+        #         }
+        #       ]
+
+        #       file_system = [
+        #         {
+        #           retention_in_days = 0    # Required
+        #           retention_in_mb   = 1024 # Required
+        #         }
+        #       ]
+        #     }
+        #   ]
+        # }
+      ]
+
+      sticky_settings = [
+        # {
+        #   app_setting_names       = null
+        #   connection_string_names = null
+        # }
+      ]
+
       storage_account = [
         # {
         #   access_key   = sensitive(data.azurerm_storage_account_keys.main_storage_account.keys[0].value) # Required, wrap the input into the sensitive() function.
@@ -454,21 +466,6 @@ module "linux_function_app" {
         #   mount_path   = null
         # }
       ]
-      sticky_settings = [
-        # {
-        #   app_setting_names       = null
-        #   connection_string_names = null
-        # }
-      ]
     }
   }
 }
-
-output "linux_function_apps" {
-  description = "An object containing the Azure Linux Function apps created by the module."
-  value       = module.linux_function_app.linux_function_apps
-  sensitive   = true
-}
-
-
-
