@@ -67,7 +67,7 @@ variable "azurerm_linux_function_app_params" {
         node_version                = string
         python_version              = string
         powershell_core_version     = string
-        use_custom_runtime          = string
+        use_custom_runtime          = bool
 
         docker = list(object({
           registry_url      = string

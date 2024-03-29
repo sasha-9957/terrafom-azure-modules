@@ -114,8 +114,8 @@ variable "azurerm_storage_account_params" {
 
     network_rules = list(object({
       default_action             = string # required
-      bypass                     = string
-      ip_rules                   = string
+      bypass                     = set(string)
+      ip_rules                   = set(string)
       virtual_network_subnet_ids = set(string)
       private_link_access = list(object({
         endpoint_resource_id = string # required

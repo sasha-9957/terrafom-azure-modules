@@ -17,7 +17,7 @@ resource "azurerm_key_vault" "this" {
 
   dynamic "access_policy" {
     iterator = ap
-    for_each = each.value.ap
+    for_each = each.value.access_policy
 
     content {
       tenant_id               = ap.value.tenant_id # required

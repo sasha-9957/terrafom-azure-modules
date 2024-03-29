@@ -67,17 +67,17 @@ resource "azurerm_linux_function_app" "this" {
         for_each = sc.value.application_stack
 
         content {
-          dotnet_version              = sc.value.dotnet_version
-          use_dotnet_isolated_runtime = sc.value.use_dotnet_isolated_runtime
-          java_version                = sc.value.java_version
-          node_version                = sc.value.node_version
-          python_version              = sc.value.python_version
-          powershell_core_version     = sc.value.powershell_core_version
-          use_custom_runtime          = sc.value.use_custom_runtime
+          dotnet_version              = appst.value.dotnet_version
+          use_dotnet_isolated_runtime = appst.value.use_dotnet_isolated_runtime
+          java_version                = appst.value.java_version
+          node_version                = appst.value.node_version
+          python_version              = appst.value.python_version
+          powershell_core_version     = appst.value.powershell_core_version
+          use_custom_runtime          = appst.value.use_custom_runtime
 
           dynamic "docker" {
             iterator = d
-            for_each = appst.value.docker
+            for_each = can(appst.value.docker) ? appst.value.docker : []
 
             content {
               registry_url      = d.value.registry_url

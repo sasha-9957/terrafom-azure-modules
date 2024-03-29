@@ -1,9 +1,10 @@
 module "resource_group" {
   source = "../modules/terraform-azurerm-resource-group"
+  for_each             = local.environments
 
   resource_group_params = {
     main_rg = {
-      location   = var.location
+      location   = local.location
       name       = module.name.names["main_rg"].result
       managed_by = null
       tags       = module.tags.tags
@@ -13,9 +14,11 @@ module "resource_group" {
 
 module "azurerm_service_plan" {
   source = "../modules/terraform-azurerm-service-plan"
+  for_each             = local.environments
+  
   azurerm_service_plan_params = {
     service_plan_linux = {
-      name                         = "${var.environment}-${var.location}-dwh"
+      name                         = "${var.environment}-${local.location}-dwh"
       location                     = module.resource_group.resource_groups["main_rg"].location
       os_type                      = "Linux"
       resource_group_name          = module.name.names["main_rg"].result

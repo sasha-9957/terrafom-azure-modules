@@ -210,7 +210,7 @@ resource "azurerm_storage_account" "this" {
       virtual_network_subnet_ids = nr.value.virtual_network_subnet_ids
       dynamic "private_link_access" {
         iterator = pla
-        for_each = each.value.private_link_access
+        for_each = nr.value.private_link_access
 
         content {
           endpoint_resource_id = pla.value.endpoint_resource_id # required

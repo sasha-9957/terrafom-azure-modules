@@ -31,5 +31,11 @@ variable "azurerm_key_vault_params" {
       ip_rules                   = set(string)
       virtual_network_subnet_ids = set(string)
     }))
+
+    contact = list(object({
+      email = string
+      name  = string
+      phone = string
+    }))
   }))
 }
