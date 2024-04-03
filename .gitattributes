@@ -1,0 +1,33 @@
+# Details per file setting:
+#   text    These files should be normalized (i.e. convert CRLF to LF).
+#   binary  These files are binary and should be left untouched.
+#
+# Note that binary is a macro for -text -diff.
+######################################################################
+
+# Auto detect
+##   Handle line endings automatically for files detected as
+##   text and leave all files detected as binary untouched.
+##   This will handle all files NOT defined below.
+*          text=auto
+
+#
+# The above will handle all files NOT found below
+#
+
+# Documentation
+*.md       text diff=markdown
+
+# Scripts
+*.bash     text eol=lf
+*.fish     text eol=lf
+*.sh       text eol=lf
+*.zsh      text eol=lf
+bashrc     text eol=lf
+
+# YAML files; to please linters on Windows
+*.yaml     text eol=lf
+*.yml      text eol=lf
+
+# Ignore files (like .npmignore or .gitignore)
+*.*ignore         text

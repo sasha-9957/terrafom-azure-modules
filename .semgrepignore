@@ -1,0 +1,8 @@
+# Storage Account module
+terraform-azurerm-storage-account/
+
+# Semgrep rules folder
+.semgrep
+
+# Semgrep-action log folder
+.semgrep_logs/

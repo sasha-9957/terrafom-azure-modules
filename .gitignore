@@ -85,7 +85,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 .tfrc
-.terraform.lock.hcl
 
 # Lock files from modules directory
 **/modules/**/.terraform.lock.hcl
@@ -103,4 +102,3 @@ terraform.rc
 *.code-workspace
 
 .vs/*
-.terraform.lock.hcl
